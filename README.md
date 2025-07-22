@@ -1,1 +1,1 @@
-Made while learning # DSA
+# Made while learning DSA
