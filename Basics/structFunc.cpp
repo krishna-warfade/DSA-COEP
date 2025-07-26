@@ -10,13 +10,19 @@ struct Rectangle {
 int area(struct Rectangle r) {
     return r.length * r.breadth;
 }
-int perimeter(struct Rectangle r) {
+int perimeter(Rectangle r) {
     return 2 * (r.length + r.breadth);
+}
+void initialize (Rectangle *r, int l, int b) {
+    r->length = l;
+    r->breadth = b;
 }
 int main() {
     Rectangle r = {0, 0};
     cout << "Enter length and breadth of rectangle: ";
-    cin >> r.length >> r.breadth;
+    int l, b;
+    cin >> l >> b;
+    initialize(&r, l, b);
     int a = area(r);
     int peri = perimeter(r);
 
