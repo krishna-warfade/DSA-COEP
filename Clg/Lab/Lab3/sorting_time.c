@@ -42,7 +42,14 @@ int main() {
     FILE *fpr;
     fpr = fopen("read_arr.txt", "r");
 
-    read_into_array(fpr);
+    int i = 0, len = 10000;
+    int arr1[len], arr2[len];
+
+    while ((fscanf(fpr, "%d,", &arr1[i]) == 1) && i < len) {
+        i++;
+    }
+    fscanf(fpr, "%d", &arr1[i]);
+    fclose(fpr);
 
     clock_t start, t1, t2, tbub, tsel;
 
