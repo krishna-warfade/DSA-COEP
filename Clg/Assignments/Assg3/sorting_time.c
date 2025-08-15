@@ -70,6 +70,9 @@ int main() {
     fp = fopen("wsort.txt", "w");
 
     fprintf(fp, "1 %f\n2 %f", (double)tbub/(CLOCKS_PER_SEC), (double)tsel/(CLOCKS_PER_SEC));
+
+    system("gnuplot -e \"set terminal png; set output 'sort_analysis.png'; plot 'op.txt' with lines\"");
+
     fclose(fp);
     return 0;
 }
