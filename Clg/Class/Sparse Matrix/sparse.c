@@ -1,6 +1,7 @@
 /* CREATE A SPARSE MATRIX
  * FILL THE SPARSE MATRIX
  * PRINT IT
+ * (remaining)INITIALIZE 
 */
 
 #include <stdio.h>
