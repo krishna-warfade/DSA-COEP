@@ -71,7 +71,7 @@ int main() {
 
     fprintf(fp, "1 %f\n2 %f", (double)tbub/(CLOCKS_PER_SEC), (double)tsel/(CLOCKS_PER_SEC));
 
-    system("gnuplot -e \"set terminal png; set output 'sort_analysis.png'; plot 'op.txt' with lines\"");
+    // system("gnuplot -e \"set terminal png; set output 'sort_analysis.png'; set xlabel "1-Bubble & 2-Selection Sort"; set ylabel "Time(Clocks/Seconds)"; set title "SORTING TIME ANALYSIS"; set xrange [0.5:2.5]; set yrange [0.05:0.22];plot 'wsort.txt' with lines\"");
 
     fclose(fp);
     return 0;
