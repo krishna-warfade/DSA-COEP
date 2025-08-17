@@ -1,7 +1,15 @@
-/* CREATE A SPARSE MATRIX
+/* Steps: 
+ *
+ * CREATE A SPARSE MATRIX
+ * INITIALIZE 
  * FILL THE SPARSE MATRIX
  * PRINT IT
- * (remaining)INITIALIZE 
+ * CREATE ANOTHER SPARSE MATRIX
+ * PRINT IT
+ * ADD 2 SPARSE MATRICES
+ * PRINT RESULTANT MATRIX
+ * TRANSPOSE THE MATRIX
+ * PRINT THE RESULTANT MATRIX
 */
 
 #include <stdio.h>
@@ -17,21 +25,46 @@ typedef struct sparse {
     int m;
     int n;
     int num;
+    int size;
     term *arr; // array of elements to be created dynamically
 } sparse;
 
+void initialize(sparse *s, int rows, int cols, int size) {
+    s->m = rows;
+    s->n = cols;
+    s->num = 0;
+    s->size = size;
+    s->arr = (term*) malloc(sizeof(term) * size);
+}
+
+void insert(sparse *s, int row, int col, int value) {
+    if (value == 0) return;
+
+    if(s->num < s->size) {
+        s->arr[s->num].row = row;
+        s->arr[s->num].col = col;
+        s->arr[s->num].value = value;
+        s->num++;
+    } else 
+        printf("Exceeded non-zero element limit\n");
+}
+
 void create(sparse *s) {
+    int rows, cols, nonzeros;
+
     printf("Enter dimensions ");
-    scanf("%d%d", &s->m, &s->n);
+    scanf("%d%d", &rows, &cols);
     printf("Enter no of non-zero elements ");
-    scanf("%d", &s->num);
-    s->arr = (term*)malloc(sizeof(term) * s->num);
+    scanf("%d", &nonzeros);
+
+    initialize(s, rows, cols, nonzeros);
+
     printf("Enter all elements(non-zero) ");
-    for(int i = 0; i < s->num; i++) {
-        scanf("%d%d%d", &s->arr[i].row, &s->arr[i].col, &s->arr[i].value);
-    }
-    for(int i = 0; i < s->num; i++) {
-        printf("%d %d %d\n", s->arr[i].row, s->arr[i].col, s->arr[i].value);
+    for(int i = 0; i < nonzeros; i++) {
+        int row, col, value;
+
+        scanf("%d%d%d", &row, &col, &value);
+        insert(s, row, col, value);
     }
 }
 
