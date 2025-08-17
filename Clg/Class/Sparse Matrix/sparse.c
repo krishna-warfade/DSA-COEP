@@ -88,12 +88,30 @@ void printfullmatrix(sparse s) {
     }
 }
 
+void add(sparse *s3, sparse *s1, sparse *s2) {
+    if (s1->m != s2->m || s1->n != s2->n) {
+        printf("Can't perform addition, dimensions are not equal");
+        s3->m = s3->n = s3->num = 0;
+        return;
+    }
+    initialize(s3, s1->m, s1->n, s1->num + s2->num);
+
+    int i = 0, j = 0;
+}
+
 int main() {
-    sparse s;
-    create(&s);
+    sparse s1, s2, s3;
+    create(&s1);
+    create(&s2);
 
-    printfullmatrix(s);
+    add(&s3, &s1, &s2);
 
-    free(s.arr);
+    printfullmatrix(s1);
+    printfullmatrix(s2);
+    printfullmatrix(s3);
+
+    free(s1.arr);
+    free(s2.arr);
+    free(s3.arr);
     return 0;
 }
