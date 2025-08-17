@@ -98,29 +98,29 @@ void add(sparse *s3, sparse *s1, sparse *s2) {
 
     int i = 0, j = 0;
 
-    while (i < s1->arr[i].num && j < s2->arr[j].num) {
-        if ((s1->arr[i].row < s2->arr[j].row) || (s1->arr[i].row == s2->arr[j].row) || (s1->arr[i].col < s2->arr[j].col)) {
+    while (i < s1->num && j < s2->num) {
+        if (s1->arr[i].row < s2->arr[j].row || (s1->arr[i].row == s2->arr[j].row && s1->arr[i].col < s2->arr[j].col)) {
             insert(s3, s1->arr[i].row, s1->arr[i].col, s1->arr[i].value);
             i++;
-        } else if ((s1->arr[i].row > s2->arr[j].row) || (s1->arr[i].row == s2->arr[j].row) || (s1->arr[i].col > s2->arr[j].col)) {
-            insert(s3, s2->arr[i].row, s2->arr[i].col, s2->arr[i].value);
-            j++;
-        } else {
-            int sum = s1->arr[i].value + s2.arr[j].value;
-
-            if (sum !=0)
-                insert(s3, s2->arr[i].row, s2->arr[i].col, sum);
-            i++;
-            j++;
-        }
-        while (i < s1->num) {
-            insert(s3, s1->arr[i].row, s1->arr[i].col, s1->arr[i].value);
-            i++;
-        }
-        while (j < s2->num) {
+        } else if (s1->arr[i].row > s2->arr[j].row || (s1->arr[i].row == s2->arr[j].row && s1->arr[i].col > s2->arr[j].col)) {
             insert(s3, s2->arr[j].row, s2->arr[j].col, s2->arr[j].value);
             j++;
+        } else {
+            int sum = s1->arr[i].value + s2->arr[j].value;
+
+            if (sum !=0)
+                insert(s3, s1->arr[i].row, s1->arr[i].col, sum);
+            i++;
+            j++;
         }
+    }
+    while (i < s1->num) {
+            insert(s3, s1->arr[i].row, s1->arr[i].col, s1->arr[i].value);
+            i++;
+    }
+    while (j < s2->num) {
+            insert(s3, s2->arr[j].row, s2->arr[j].col, s2->arr[j].value);
+            j++;
     }
 }
 
