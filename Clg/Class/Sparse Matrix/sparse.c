@@ -8,8 +8,8 @@
  * PRINT IT
  * ADD 2 SPARSE MATRICES
  * PRINT RESULTANT MATRIX
- * TRANSPOSE THE MATRIX
- * PRINT THE RESULTANT MATRIX
+ * TRANSPOSE THE RESULTANT MATRIX
+ * PRINT IT
 */
 
 #include <stdio.h>
@@ -97,10 +97,67 @@ void add(sparse *s3, sparse *s1, sparse *s2) {
     initialize(s3, s1->m, s1->n, s1->num + s2->num);
 
     int i = 0, j = 0;
+
+    while (i < s1->num && j < s2->num) {
+        if (s1->arr[i].row < s2->arr[j].row || (s1->arr[i].row == s2->arr[j].row && s1->arr[i].col < s2->arr[j].col)) {
+            insert(s3, s1->arr[i].row, s1->arr[i].col, s1->arr[i].value);
+            i++;
+        } else if (s1->arr[i].row > s2->arr[j].row || (s1->arr[i].row == s2->arr[j].row && s1->arr[i].col > s2->arr[j].col)) {
+            insert(s3, s2->arr[j].row, s2->arr[j].col, s2->arr[j].value);
+            j++;
+        } else {
+            int sum = s1->arr[i].value + s2->arr[j].value;
+
+            if (sum !=0)
+                insert(s3, s1->arr[i].row, s1->arr[i].col, sum);
+            i++;
+            j++;
+        }
+    }
+    while (i < s1->num) {
+            insert(s3, s1->arr[i].row, s1->arr[i].col, s1->arr[i].value);
+            i++;
+    }
+    while (j < s2->num) {
+            insert(s3, s2->arr[j].row, s2->arr[j].col, s2->arr[j].value);
+            j++;
+    }
+}
+
+void fast_transpose(sparse *t, sparse *s) {
+    initialize(t, s->n, s->m, s->num);
+
+    if (s->num > 0) {
+        int rowterms[s->n], start_pos[s->n];
+
+        int i, pos, numcols = s->n, numterms = s->num;
+        t->m = s->n;
+        t->n = s->m;
+        t->num = numterms;
+
+        for (i= 0; i < numcols; i++) {
+            rowterms[i] = 0;
+        }
+        for (i = 0; i < numterms; i++) {
+            rowterms[s->arr[i].col]++;
+        }
+        
+        start_pos[0] = 0;
+        for (i = 1; i < numcols; i++) {
+            start_pos[i] = start_pos[i - 1] + rowterms[i - 1];
+        }
+        for (i = 0; i < numterms; i++) {
+            int pos = start_pos[s->arr[i].col]++;
+            t->arr[pos].row = s->arr[i].col;
+            t->arr[pos].col = s->arr[i].row;
+            t->arr[pos].value = s->arr[i].value;
+        }
+
+    }
 }
 
 int main() {
-    sparse s1, s2, s3;
+    sparse s1, s2, s3, t;
     create(&s1);
     create(&s2);
 
@@ -108,10 +165,17 @@ int main() {
 
     printfullmatrix(s1);
     printfullmatrix(s2);
+
+    printf("\nAdded Matrix\n");
     printfullmatrix(s3);
+
+    printf("\nTransposed Matrix\n");
+    fast_transpose(&t, &s3);
+    printfullmatrix(t);
 
     free(s1.arr);
     free(s2.arr);
     free(s3.arr);
+    free(t.arr);
     return 0;
 }
