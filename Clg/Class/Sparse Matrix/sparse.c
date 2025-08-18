@@ -8,8 +8,8 @@
  * PRINT IT
  * ADD 2 SPARSE MATRICES
  * PRINT RESULTANT MATRIX
- * TRANSPOSE THE MATRIX
- * PRINT THE RESULTANT MATRIX
+ * TRANSPOSE THE RESULTANT MATRIX
+ * PRINT IT
 */
 
 #include <stdio.h>
@@ -124,8 +124,40 @@ void add(sparse *s3, sparse *s1, sparse *s2) {
     }
 }
 
+void fast_transpose(sparse *t, sparse *s) {
+    initialize(t, s->n, s->m, s->num);
+
+    if (s->num > 0) {
+        int rowterms[s->n], start_pos[s->n];
+
+        int i, pos, numcols = s->n, numterms = s->num;
+        t->m = s->n;
+        t->n = s->m;
+        t->num = numterms;
+
+        for (i= 0; i < numcols; i++) {
+            rowterms[i] = 0;
+        }
+        for (i = 0; i < numterms; i++) {
+            rowterms[s->arr[i].col]++;
+        }
+        
+        start_pos[0] = 0;
+        for (i = 1; i < numcols; i++) {
+            start_pos[i] = start_pos[i - 1] + rowterms[i - 1];
+        }
+        for (i = 0; i < numterms; i++) {
+            int pos = start_pos[s->arr[i].col]++;
+            t->arr[pos].row = s->arr[i].col;
+            t->arr[pos].col = s->arr[i].row;
+            t->arr[pos].value = s->arr[i].value;
+        }
+
+    }
+}
+
 int main() {
-    sparse s1, s2, s3;
+    sparse s1, s2, s3, t;
     create(&s1);
     create(&s2);
 
@@ -133,10 +165,17 @@ int main() {
 
     printfullmatrix(s1);
     printfullmatrix(s2);
+
+    printf("\nAdded Matrix\n");
     printfullmatrix(s3);
+
+    printf("\nTransposed Matrix\n");
+    fast_transpose(&t, &s3);
+    printfullmatrix(t);
 
     free(s1.arr);
     free(s2.arr);
     free(s3.arr);
+    free(t.arr);
     return 0;
 }
