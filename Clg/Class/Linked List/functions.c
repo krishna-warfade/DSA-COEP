@@ -1,4 +1,3 @@
-// head -> Node1->Node2
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -7,6 +6,17 @@ typedef struct Node
     int data;
     struct Node *next;
 } Node;
+
+
+
+Node* del_begin(Node *head) {
+    if (head == NULL) return NULL;
+    Node *temp = head;
+
+    head = head->next;
+    free(temp);
+    return head;
+}
 
 int main()
 {
@@ -21,7 +31,13 @@ int main()
     Node2->data = 20;
     Node2->next = NULL;
 
-    printf("%d\n", Head->data);
+    printf("Before Deletion\n");
+    printf("%d->", Head->data);
     printf("%d\n", Head->next->data);
-    // This will print a garbage value
+
+    printf("After Deletion\n");
+    Head = del_begin(Head);
+    if (Head != NULL)
+        printf("%d\n", Head->data);
+    return 0;
 }
