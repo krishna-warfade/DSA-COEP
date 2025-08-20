@@ -24,7 +24,7 @@ typedef struct term {
 typedef struct sparse {
     int m;
     int n;
-    int num;
+    int num; // no. of non-zero elements
     int size;
     term *arr; // array of elements to be created dynamically
 } sparse;
