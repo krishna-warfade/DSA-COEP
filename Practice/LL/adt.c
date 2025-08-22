@@ -54,6 +54,45 @@ void RDisplay (Node* p) {
     }
 }
 
+void DisplayMax (Node *p) {
+    Node *q = p->next;
+    int max = p->data;
+
+    while (q) {
+        if (q->data > max)
+            max = q->data;
+        q = q->next;
+    }
+    printf("\nHighest Element: %d\n", max);
+}
+
+void LinearSearch (Node *p, int val) {
+    Node *q = p;
+    int found = 0;
+
+    while (q) {
+        if (q->data == val)
+            found = 1;
+        q = q->next;
+    }
+    if(found)
+        printf("%d Found\n", val);
+    else 
+        printf("%d Not Found\n", val);
+}
+
+void DisplayMin (Node *p) {
+    Node *q = p->next;
+    int min = p->data;
+
+    while (q) {
+        if (q->data < min)
+            min = q->data;
+        q = q->next;
+    }
+    printf("Lowest Element: %d\n", min);
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
@@ -63,6 +102,12 @@ int main()
     insertBeg(15);
 
     RDisplay(first);
+
+    DisplayMax(first);
+
+    DisplayMin(first);
+
+    LinearSearch(first, 8);
 
     return 0;
 }
