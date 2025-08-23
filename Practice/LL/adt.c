@@ -6,7 +6,7 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-Node *first;
+Node *first; //head
 
 Node* init(int val) {
     Node* newnode = (Node*)malloc(sizeof(Node));
@@ -21,10 +21,63 @@ void insertBeg (int val) {
     first = node;
 }
 
+void insertEnd (int val) {
+    Node* node = init(val);
+    
+    if (first == NULL) {
+        first = node;
+        return;
+    }
+
+    Node* temp = first;
+
+    while (temp->next)
+        temp = temp->next;
+    temp->next = node;
+}
+
+void insertSpec (int val, int idx) {
+    if (idx < 0) {
+        printf("Invalid index\n");
+        return;
+    }
+    if (idx == 0) {
+        insertBeg(val);
+        return;
+    }
+    Node* newnode = init(val);
+    Node* temp = first;
+    int j = 0; //int len = 0;
+
+    while (temp && j < idx - 1) {
+        j++;
+        temp = temp->next; //reached the inserting position
+    }
+    if (temp == NULL) //temp = NULL during i.e idx > length of list
+    {
+        printf("Invalid index\n");
+        free(newnode);
+        return;
+    }
+    newnode->next = temp->next;
+    temp->next = newnode;
+
+    // temp = first;
+    // if (idx > len) {
+    //     printf("Invalid index\n");
+    //     return;
+    // }
+    // while (j != idx - 1) {
+    //     temp = temp->next;
+    //     j++;
+    // }
+    
+}
+
 void create (int A[], int n) {
     int i;
 
-    Node *t, *last; //since traversing till last
+    Node *newnode, *last; //since traversing till last
 
     // first = (Node*)malloc(sizeof(Node));
     // first->data = A[0];
@@ -32,10 +85,10 @@ void create (int A[], int n) {
     last = first;
 
     for (i = 1; i < n; i++) {
-        t = init(A[i]);
+        newnode = init(A[i]);
 
-        last->next = t;
-        last = t;
+        last->next = newnode;
+        last = newnode;
     }
 }
 
@@ -70,15 +123,15 @@ void LinearSearch (Node *p, int val) {
     Node *q = p;
     int found = 0;
 
-    while (q) {
+    while (q && !found) {
         if (q->data == val)
             found = 1;
         q = q->next;
     }
     if(found)
-        printf("%d Found\n", val);
+        printf("%d Found in the list\n", val);
     else 
-        printf("%d Not Found\n", val);
+        printf("%d Not Found in the list\n", val);
 }
 
 void DisplayMin (Node *p) {
@@ -101,13 +154,22 @@ int main()
 
     insertBeg(15);
 
+    insertSpec(99, 0);
+    
+    insertSpec(18, 0);
+
+    insertSpec(65, 6);
+
+    insertEnd(24);
+
     RDisplay(first);
+    printf("\n");
 
     DisplayMax(first);
 
     DisplayMin(first);
 
-    LinearSearch(first, 8);
+    LinearSearch(first, 24);
 
     return 0;
 }
