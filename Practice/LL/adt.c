@@ -74,6 +74,43 @@ void insertSpec (int val, int idx) {
     
 }
 
+void insertSorted (int val) {
+    Node* newnode = init(val);
+    if (first == NULL) first = newnode;
+    Node* slow = NULL;
+    Node* fast = first;
+
+    while(fast && fast->data < val) { // fast jumps to just next greater element
+        slow = fast;
+        fast = fast->next;
+    }
+    if (fast == first) {
+        newnode->next = first;
+        first = newnode;
+    } else { //fast is not first, can insert node btwn fast and slow
+        newnode->next = fast;
+        slow->next = newnode;
+    }
+
+
+    // if (fast->data >= val && slow->data <= val) {
+    //     newnode->next = fast;
+    //     slow->next = newnode;
+    // }
+}
+
+void insertEnd2 (int x) {
+    Node* newnode = init(x);
+    Node* last;
+
+    if (first == NULL) {
+        first = last = newnode;
+    } else {
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
 void create (int A[], int n) {
     int i;
 
@@ -162,16 +199,20 @@ int main()
 
     create(A, sizeof(A) / sizeof(A[0]));
 
-    insertBeg(15);
-    insertSpec(65, 6);
-    insertEnd(24);
+    // insertBeg(15);
+    // insertSpec(65, 6);
+    // insertEnd(24);
     RDisplay(first);
     printf("\n");
-    DisplayMax(first);
-    DisplayMin(first);
-    LinearSearch(first, 24);
-    printf("Length is: %d\n", RCount(first));
-    printf("Sum is: %d\n", RSum(first));
+    // DisplayMax(first);
+    // DisplayMin(first);
+    // LinearSearch(first, 24);
+    // printf("Length is: %d\n", RCount(first));
+    // printf("Sum is: %d\n", RSum(first));
+    insertSorted(6);
+    printf("\nAfter insertSorted\n");
+    RDisplay(first);
+    printf("\n");
 
     return 0;
 }
