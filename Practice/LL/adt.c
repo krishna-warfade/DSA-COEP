@@ -146,6 +146,16 @@ void DisplayMin (Node *p) {
     printf("Lowest Element: %d\n", min);
 }
 
+int RCount (Node* p) {
+    if (p == NULL) return 0;
+    return RCount(p->next) + 1;
+}
+
+int RSum (Node* p) {
+    if (p == 0) return 0;
+    return RSum(p->next) + p->data;
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
@@ -153,23 +163,15 @@ int main()
     create(A, sizeof(A) / sizeof(A[0]));
 
     insertBeg(15);
-
-    insertSpec(99, 0);
-    
-    insertSpec(18, 0);
-
     insertSpec(65, 6);
-
     insertEnd(24);
-
     RDisplay(first);
     printf("\n");
-
     DisplayMax(first);
-
     DisplayMin(first);
-
     LinearSearch(first, 24);
+    printf("Length is: %d\n", RCount(first));
+    printf("Sum is: %d\n", RSum(first));
 
     return 0;
 }
