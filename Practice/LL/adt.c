@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Node {
     int data;
@@ -21,6 +22,13 @@ void insertBeg (int val) {
     first = node;
 }
 
+void insertBeg2(Node** headRef, int val) {
+    Node* newnode = init(val);
+
+    newnode->next = *headRef; // link new node to current head
+    *headRef = newnode;       // update head itself
+}
+
 void insertEnd (int val) {
     Node* node = init(val);
     
@@ -34,6 +42,18 @@ void insertEnd (int val) {
     while (temp->next)
         temp = temp->next;
     temp->next = node;
+}
+
+void insertEnd2 (int x) {
+    Node* newnode = init(x);
+    Node* last;
+
+    if (first == NULL) {
+        first = last = newnode;
+    } else {
+        last->next = newnode;
+        last = newnode;
+    }
 }
 
 void insertSpec (int val, int idx) {
@@ -91,24 +111,55 @@ void insertSorted (int val) {
         newnode->next = fast;
         slow->next = newnode;
     }
-
-
-    // if (fast->data >= val && slow->data <= val) {
-    //     newnode->next = fast;
-    //     slow->next = newnode;
-    // }
 }
 
-void insertEnd2 (int x) {
-    Node* newnode = init(x);
-    Node* last;
+void DeleteBeg() {
+    if (first == NULL) return;
+    Node* temp = first;
 
-    if (first == NULL) {
-        first = last = newnode;
+    if (first->next == NULL) {
+        free(first);
+        first = NULL;
     } else {
-        last->next = newnode;
-        last = newnode;
+        first = first->next;
+        free(temp);
     }
+}
+
+void DeleteEnd() {
+    if (first == NULL) return;
+    if (first->next == NULL) {
+        free(first);
+        first = NULL; //bcz first still points to freed memory
+        return;
+    }
+    Node* temp = first;
+
+    while (temp->next->next) 
+        temp = temp->next;
+    free(temp->next);
+    temp->next = NULL;
+}
+
+void DeletePos(int pos) {
+    if (first == NULL) return;
+    if (pos == 1) {
+        DeleteBeg();
+        return;
+    }
+
+    Node* slow = NULL;
+    Node* fast = first;
+    int i = 1;
+
+    while (fast && i < pos) {
+        slow = fast;
+        fast = fast->next;
+        i++;
+    }
+    if (fast == NULL) return; //pos is out of bound
+    slow->next = fast->next;
+    free(fast);
 }
 
 void create (int A[], int n) {
@@ -156,21 +207,6 @@ void DisplayMax (Node *p) {
     printf("\nHighest Element: %d\n", max);
 }
 
-void LinearSearch (Node *p, int val) {
-    Node *q = p;
-    int found = 0;
-
-    while (q && !found) {
-        if (q->data == val)
-            found = 1;
-        q = q->next;
-    }
-    if(found)
-        printf("%d Found in the list\n", val);
-    else 
-        printf("%d Not Found in the list\n", val);
-}
-
 void DisplayMin (Node *p) {
     Node *q = p->next;
     int min = p->data;
@@ -193,6 +229,118 @@ int RSum (Node* p) {
     return RSum(p->next) + p->data;
 }
 
+void LinearSearch (Node *p, int val) {
+    Node *q = p;
+    int found = 0;
+
+    while (q && !found) {
+        if (q->data == val)
+            found = 1;
+        q = q->next;
+    }
+    if(found)
+        printf("%d Found in the list\n", val);
+    else 
+        printf("%d Not Found in the list\n", val);
+}
+
+bool isSorted () {
+    Node* fast = first;
+    Node* slow = NULL;
+    //OR can store prev node's value and compare with a pointer - single ptr needed
+
+    while (fast->next) {
+        slow = fast;
+        fast = fast->next;
+        if (slow->data > fast->data)
+            return false;
+    }
+    return true;
+}
+
+Node* rmDupS () {
+    Node* temp = first;
+
+    if (temp == NULL) return NULL;
+    if (temp->next == NULL) return first;
+
+    while (temp && temp->next) { //checking temp bcoz in the if part temp can point to null
+        if (temp->data == (temp->next)->data)
+        {
+            Node* dup = temp->next;
+            temp->next = dup->next;
+            free(dup); //protn from mem leak
+        }
+        else temp = temp->next;
+    }
+    return first;
+}
+
+Node* rmDupS2 () {
+    if (first == NULL) return NULL;
+    if (first->next == NULL) return first;
+
+    Node* slow = first;
+    Node* fast = first->next; // first->next
+
+    while (fast) {
+        if (slow->data == fast->data) {
+            Node* dup = fast;
+            slow->next = fast->next; // dup->next
+            fast = fast->next;
+            free(dup);
+        }
+        else {
+            slow = fast;
+            fast = fast->next;
+        }
+    }
+    return first;
+}
+
+void Reverse2 () {
+    Node* temp = first;
+    int *arr = (int*)malloc(100 * sizeof(int));
+    int i = 0;
+
+    while (temp) {
+        arr[i] = temp->data;
+        temp = temp->next;
+        i++;
+    }
+    i--; // last index
+    temp = first;
+    while (i >= 0) {
+        temp->data = arr[i];
+        temp = temp->next;
+        i--;
+    }
+    free(arr);
+}
+
+void Reverse () {
+    Node* prev = NULL;
+    Node* curr = NULL;
+    Node* n = first;
+
+    while (n) {
+        prev = curr;
+        curr = n;
+        n = n->next;
+        curr->next = prev;
+    }
+    first = curr;
+}
+
+void ReverseRec (Node* q, Node* p) {
+    if (p) {
+        ReverseRec(p, p->next);
+        p->next = q; //recursive call pointing to previous
+    }
+    else
+        first = q;
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
@@ -200,6 +348,7 @@ int main()
     create(A, sizeof(A) / sizeof(A[0]));
 
     // insertBeg(15);
+    // insertBeg2(&first, 25);
     // insertSpec(65, 6);
     // insertEnd(24);
     RDisplay(first);
@@ -209,10 +358,20 @@ int main()
     // LinearSearch(first, 24);
     // printf("Length is: %d\n", RCount(first));
     // printf("Sum is: %d\n", RSum(first));
-    insertSorted(6);
-    printf("\nAfter insertSorted\n");
+    // insertSorted(5);
+    // printf("\nAfter insertSorted\n");
+    // while (first) {
+    //     DeleteBeg();
+    //     RDisplay(first);
+    //     printf("\n");
+    // }
+    // DeleteEnd();
+    // DeletePos(5);
+    // if (isSorted()) printf("List is sorted");
+    // else printf("List is Unsorted");
+    // rmDupS2 ();
+    // Reverse();
+    ReverseRec(NULL, first);
     RDisplay(first);
-    printf("\n");
-
     return 0;
 }
