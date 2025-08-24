@@ -1,0 +1,38 @@
+# Compiled source files
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.libs
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.stackdump
+
+# Compiler cache
+*.gcda
+*.gcno
+*.gcov
+
+# Build directories
+/build/
+/bin/
+/Debug/
+/Release/
+
+# Misc
+*.log
+*.tmp
