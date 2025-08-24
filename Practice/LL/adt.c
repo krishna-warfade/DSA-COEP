@@ -21,6 +21,13 @@ void insertBeg (int val) {
     first = node;
 }
 
+void insertBeg2(Node** headRef, int val) {
+    Node* newnode = init(val);
+
+    newnode->next = *headRef; // link new node to current head
+    *headRef = newnode;       // update head itself
+}
+
 void insertEnd (int val) {
     Node* node = init(val);
     
@@ -34,6 +41,18 @@ void insertEnd (int val) {
     while (temp->next)
         temp = temp->next;
     temp->next = node;
+}
+
+void insertEnd2 (int x) {
+    Node* newnode = init(x);
+    Node* last;
+
+    if (first == NULL) {
+        first = last = newnode;
+    } else {
+        last->next = newnode;
+        last = newnode;
+    }
 }
 
 void insertSpec (int val, int idx) {
@@ -91,23 +110,34 @@ void insertSorted (int val) {
         newnode->next = fast;
         slow->next = newnode;
     }
-
-
-    // if (fast->data >= val && slow->data <= val) {
-    //     newnode->next = fast;
-    //     slow->next = newnode;
-    // }
 }
 
-void insertEnd2 (int x) {
-    Node* newnode = init(x);
-    Node* last;
+void DeleteBeg() {
+    if (first == NULL) return;
+    Node* temp = first;
 
-    if (first == NULL) {
-        first = last = newnode;
+    if (first->next == NULL) {
+        free(first);
+        first = NULL;
     } else {
-        last->next = newnode;
-        last = newnode;
+        first = first->next;
+        free(temp);
+    }
+}
+
+void DeleteEnd() {
+    if (first == NULL) return;
+    Node* temp = first;
+
+    if (first->next == NULL) {
+        free(first);
+        first = NULL;
+    } else {
+        while (temp->next->next) {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
     }
 }
 
@@ -200,6 +230,7 @@ int main()
     create(A, sizeof(A) / sizeof(A[0]));
 
     // insertBeg(15);
+    // insertBeg2(&first, 25);
     // insertSpec(65, 6);
     // insertEnd(24);
     RDisplay(first);
@@ -209,10 +240,18 @@ int main()
     // LinearSearch(first, 24);
     // printf("Length is: %d\n", RCount(first));
     // printf("Sum is: %d\n", RSum(first));
-    insertSorted(6);
-    printf("\nAfter insertSorted\n");
+    // insertSorted(6);
+    // printf("\nAfter insertSorted\n");
+    // RDisplay(first);
+    // printf("\n");
+    // while (first) {
+    //     DeleteBeg();
+    //     RDisplay(first);
+    //     printf("\n");
+    // }
+    // DeleteEnd();
+
     RDisplay(first);
     printf("\n");
-
     return 0;
 }
