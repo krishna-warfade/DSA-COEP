@@ -6,7 +6,7 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-Node *first;
+Node *first; //head
 
 Node* init(int val) {
     Node* newnode = (Node*)malloc(sizeof(Node));
@@ -21,10 +21,100 @@ void insertBeg (int val) {
     first = node;
 }
 
+void insertEnd (int val) {
+    Node* node = init(val);
+    
+    if (first == NULL) {
+        first = node;
+        return;
+    }
+
+    Node* temp = first;
+
+    while (temp->next)
+        temp = temp->next;
+    temp->next = node;
+}
+
+void insertSpec (int val, int idx) {
+    if (idx < 0) {
+        printf("Invalid index\n");
+        return;
+    }
+    if (idx == 0) {
+        insertBeg(val);
+        return;
+    }
+    Node* newnode = init(val);
+    Node* temp = first;
+    int j = 0; //int len = 0;
+
+    while (temp && j < idx - 1) {
+        j++;
+        temp = temp->next; //reached the inserting position
+    }
+    if (temp == NULL) //temp = NULL during i.e idx > length of list
+    {
+        printf("Invalid index\n");
+        free(newnode);
+        return;
+    }
+    newnode->next = temp->next;
+    temp->next = newnode;
+
+    // temp = first;
+    // if (idx > len) {
+    //     printf("Invalid index\n");
+    //     return;
+    // }
+    // while (j != idx - 1) {
+    //     temp = temp->next;
+    //     j++;
+    // }
+    
+}
+
+void insertSorted (int val) {
+    Node* newnode = init(val);
+    if (first == NULL) first = newnode;
+    Node* slow = NULL;
+    Node* fast = first;
+
+    while(fast && fast->data < val) { // fast jumps to just next greater element
+        slow = fast;
+        fast = fast->next;
+    }
+    if (fast == first) {
+        newnode->next = first;
+        first = newnode;
+    } else { //fast is not first, can insert node btwn fast and slow
+        newnode->next = fast;
+        slow->next = newnode;
+    }
+
+
+    // if (fast->data >= val && slow->data <= val) {
+    //     newnode->next = fast;
+    //     slow->next = newnode;
+    // }
+}
+
+void insertEnd2 (int x) {
+    Node* newnode = init(x);
+    Node* last;
+
+    if (first == NULL) {
+        first = last = newnode;
+    } else {
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
 void create (int A[], int n) {
     int i;
 
-    Node *t, *last; //since traversing till last
+    Node *newnode, *last; //since traversing till last
 
     // first = (Node*)malloc(sizeof(Node));
     // first->data = A[0];
@@ -32,10 +122,10 @@ void create (int A[], int n) {
     last = first;
 
     for (i = 1; i < n; i++) {
-        t = init(A[i]);
+        newnode = init(A[i]);
 
-        last->next = t;
-        last = t;
+        last->next = newnode;
+        last = newnode;
     }
 }
 
@@ -70,15 +160,15 @@ void LinearSearch (Node *p, int val) {
     Node *q = p;
     int found = 0;
 
-    while (q) {
+    while (q && !found) {
         if (q->data == val)
             found = 1;
         q = q->next;
     }
     if(found)
-        printf("%d Found\n", val);
+        printf("%d Found in the list\n", val);
     else 
-        printf("%d Not Found\n", val);
+        printf("%d Not Found in the list\n", val);
 }
 
 void DisplayMin (Node *p) {
@@ -93,21 +183,36 @@ void DisplayMin (Node *p) {
     printf("Lowest Element: %d\n", min);
 }
 
+int RCount (Node* p) {
+    if (p == NULL) return 0;
+    return RCount(p->next) + 1;
+}
+
+int RSum (Node* p) {
+    if (p == 0) return 0;
+    return RSum(p->next) + p->data;
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
 
     create(A, sizeof(A) / sizeof(A[0]));
 
-    insertBeg(15);
-
+    // insertBeg(15);
+    // insertSpec(65, 6);
+    // insertEnd(24);
     RDisplay(first);
-
-    DisplayMax(first);
-
-    DisplayMin(first);
-
-    LinearSearch(first, 8);
+    printf("\n");
+    // DisplayMax(first);
+    // DisplayMin(first);
+    // LinearSearch(first, 24);
+    // printf("Length is: %d\n", RCount(first));
+    // printf("Sum is: %d\n", RSum(first));
+    insertSorted(6);
+    printf("\nAfter insertSorted\n");
+    RDisplay(first);
+    printf("\n");
 
     return 0;
 }
