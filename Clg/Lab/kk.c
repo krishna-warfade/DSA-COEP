@@ -62,17 +62,13 @@ void InsertPos (int val, int pos) {
     p->next = node;
 }
 
-int Traverse(Node *p) {
-    int len = 0;
+void Traverse () {
+    Node* p = head;
 
-    if (p == NULL) return 0;
+    if (p == NULL) return;
     while (p)
-    {
         p = p->next;
-        len++;
-    }
-    
-    return len;
+    printf("Traversed successfully\n");
 }
 
 void DeleteBeg () {
@@ -105,23 +101,69 @@ void DeleteEnd () {
     }
 }
 
-// void DeletePos (int pos) {
-//     if (pos == 1) {
-//         DeleteBeg();
-//         return;
-//     }
-//     Node* q = NULL;
-//     Node* p = head;
+void DeletePos (int pos) {
+    if (head == NULL) return;
+    if (pos == 1) {
+        DeleteBeg();
+        return;
+    }
+    Node* q = NULL;
+    Node* p = head;
 
-//     int i = 1;
+    int i = 1;
 
-//     while (p && i < pos - 1) {
-//         q = p;
-//         p = p->next;
-//     }
-//     q->next = NULL;
-//     free(p);
-// }
+    while (p && i < pos) {
+        q = p;
+        p = p->next;
+        i++;
+    }
+    if (p == NULL) {
+        printf("Invalid position to delete node\n");
+        return;
+    }
+    q->next = p->next;
+    free(p);
+}
+
+int Count(Node *p) {
+    int len = 0;
+
+    if (p == NULL) return 0;
+    while (p)
+    {
+        p = p->next;
+        len++;
+    }
+    
+    return len;
+}
+
+void Search (int val) {
+    Node* p = head;
+
+    while(p) {
+        if (p->data == val) {
+            printf("%d found in the list\n", val);
+            return;
+        }
+        p = p->next;
+    }
+    printf("%d not found in the list\n", val);
+}
+
+void Reverse () {
+    Node* prev = NULL;
+    Node* curr = NULL;
+    Node* n = head;
+
+    while (n) {
+        prev = curr;
+        curr = n;
+        n = n->next;
+        curr->next = prev;
+    }
+    head = curr;
+}
 
 void DisplayHead () {
     Node* p = head;
@@ -139,23 +181,35 @@ int main() {
     InsertBeg(30);
     InsertEnd(40);
     InsertEnd(50);
+    InsertEnd(50);
+    InsertEnd(890);
     InsertPos(99, 6);
+    Traverse();
     DisplayHead();
-    int len = Traverse(head);
+    int len = Count(head);
 
     printf("Length of List is : %d\n", len);
     DeleteBeg();
     DisplayHead();
-    len = Traverse(head);
+    len = Count(head);
     printf("Length of List is : %d\n", len);
     DeleteEnd();
     DisplayHead();
-    int newlen = Traverse(head);
+    int newlen = Count(head);
 
     printf("Now, length of List is : %d\n", newlen );
-    // DeletePos(2);
-    // DisplayHead();
-    // newlen = Traverse(head);
-    // printf("length of List is : %d\n", newlen );
+
+    DeletePos(2);
+    DisplayHead();
+    newlen = Count(head);
+    printf("length of List is : %d\n", newlen );
+
+    // Search(25);
+    Search(20);
+
+    Reverse();
+    printf("Head is Reversed !!\n");
+    DisplayHead();
+
     return 0;
 }
