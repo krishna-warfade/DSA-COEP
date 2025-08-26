@@ -182,7 +182,7 @@ int main() {
 
     while (1) {
         printf("\n-----------------------\n");
-        printf("\nMENU:\n");
+        printf("MENU:\n");
         printf("1a- Insert at Beginning\n1b- Insert at End\n1c- Insert at Position\n");
         printf("2- Traverse\n");
         printf("3a- Delete at Beginning\n3b- Delete at End\n3c- Delete at Position\n");
