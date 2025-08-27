@@ -332,6 +332,23 @@ void Reverse () {
     first = curr;
 }
 
+/*
+struct ListNode* reverse (struct ListNode* l) {
+    struct ListNode* prev = NULL;
+    struct ListNode* curr = NULL;
+    struct ListNode* n = l;
+
+    while (n) {
+        prev = curr;
+        curr = n;
+        n = n->next;
+
+        curr->next = prev;
+    }
+    return curr;
+}
+*/
+
 void ReverseRec (Node* q, Node* p) {
     if (p) {
         ReverseRec(p, p->next);
