@@ -7,8 +7,8 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-Node *first; //head
-Node *second, *third;
+Node *first = NULL; //head
+Node *second = NULL, *third = NULL, *last = NULL;
 
 Node* init(int val) {
     Node* newnode = (Node*)malloc(sizeof(Node));
@@ -47,13 +47,13 @@ void insertEnd (int val) {
 
 void insertEnd2 (int x) {
     Node* newnode = init(x);
-    Node* last;
+    Node* lst;
 
     if (first == NULL) {
-        first = last = newnode;
+        first = lst = newnode;
     } else {
-        last->next = newnode;
-        last = newnode;
+        lst->next = newnode;
+        lst = newnode;
     }
 }
 
@@ -97,7 +97,10 @@ void insertSpec (int val, int idx) {
 
 void insertSorted (int val) {
     Node* newnode = init(val);
-    if (first == NULL) first = newnode;
+    if (first == NULL) {
+        first = newnode;
+        return;
+    }
     Node* slow = NULL;
     Node* fast = first;
 
@@ -172,6 +175,24 @@ void create (int A[], int n) {
     // first->data = A[0];
     first = init(A[0]);
     last = first;
+
+    for (i = 1; i < n; i++) {
+        newnode = init(A[i]);
+
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
+void create2(int A[], int n) {
+    int i;
+
+    Node *newnode, *last; //since traversing till last
+
+    // first = (Node*)malloc(sizeof(Node));
+    // first->data = A[0];
+    second = init(A[0]);
+    last = second;
 
     for (i = 1; i < n; i++) {
         newnode = init(A[i]);
@@ -368,14 +389,46 @@ void Concat(Node* q) {
 }
 
 void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted list
+    if (p == NULL) {
+        third = q;
+        return;
+    }
+    if (q == NULL) {
+        third = p;
+        return;
+    }
+    if (p->data <= q->data) { //init 3rd & last
+        third = last = p;
+        p = p->next;
+    } else {
+        third = last = q;
+        q = q->next;
+    }
+    last->next = NULL;
 
+    while (p && q) {
+        if (p->data <= q->data) {
+            last->next = p;
+            last = p;
+            p = p->next;
+        } else {
+            last->next = q;
+            last = q;
+            q = q->next;
+        }
+        last->next = NULL;
+    }
+    if (p) last->next = p;
+    if (q) last->next = q;
 }
 
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
+    int B[] = {2, 4, 6};
 
     create(A, sizeof(A) / sizeof(A[0]));
+    create2(B, sizeof(B) / sizeof(B[0]));
 
     // insertBeg(15);
     // insertBeg2(&first, 25);
@@ -401,7 +454,12 @@ int main()
     // else printf("List is Unsorted");
     // rmDupS2 ();
     // Reverse();
-    ReverseRec(NULL, first);
-    RDisplay(first);
+    // ReverseRec(NULL, first);
+
+    RDisplay(second);
+    printf("\n");
+    Merge(first, second);
+    RDisplay(third);
+    printf("\n");
     return 0;
 }
