@@ -454,6 +454,34 @@ void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted lis
     if (q) last->next = q;
 }
 
+void CheckLoop (Node* p) {
+    if (!p) {
+        printf("Cycle Not Found\n");
+        return;
+    }
+
+    int found = 0;
+
+    Node* slow = p;
+    Node* fast = p;
+
+    do {
+        slow = slow->next;
+        fast = fast->next;
+        fast = (fast != NULL) ? fast->next : NULL;
+    } while (slow && fast);
+    printf("Cycle Not Found\n");
+
+    // while (p->next != p && p->next) {
+    //     p = p->next;
+    // }
+    // if(p->next == p) {
+    //     printf("Cycle Found\n");
+    //     return;
+    // }
+    // printf("Cycle Not Found\n");
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
@@ -496,6 +524,7 @@ int main()
     // Merge(first, second);
     // RDisplay(third);
     // printf("\n");
+    CheckLoop(first);
     
     return 0;
 }
