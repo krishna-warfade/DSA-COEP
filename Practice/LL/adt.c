@@ -8,6 +8,7 @@ typedef struct Node {
 } Node;
 
 Node *first; //head
+Node *second, *third;
 
 Node* init(int val) {
     Node* newnode = (Node*)malloc(sizeof(Node));
@@ -277,8 +278,7 @@ Node* rmDupS () {
 }
 
 Node* rmDupS2 () {
-    if (first == NULL) return NULL;
-    if (first->next == NULL) return first;
+    if (first == NULL || first->next == NULL) return first;
 
     Node* slow = first;
     Node* fast = first->next; // first->next
@@ -298,7 +298,7 @@ Node* rmDupS2 () {
     return first;
 }
 
-void Reverse2 () {
+void Reverse2 () { //reversing data using array
     Node* temp = first;
     int *arr = (int*)malloc(100 * sizeof(int));
     int i = 0;
@@ -318,7 +318,7 @@ void Reverse2 () {
     free(arr);
 }
 
-void Reverse () {
+void Reverse () { // using sliding pointers
     Node* prev = NULL;
     Node* curr = NULL;
     Node* n = first;
@@ -356,6 +356,19 @@ void ReverseRec (Node* q, Node* p) {
     }
     else
         first = q;
+}
+
+void Concat(Node* q) {
+    Node* p = first;
+
+    while(p->next) 
+        p = p->next;
+    p->next = q;
+    q = NULL; //second pointer removed
+}
+
+void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted list
+
 }
 
 int main()
