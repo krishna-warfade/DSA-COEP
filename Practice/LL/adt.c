@@ -266,6 +266,39 @@ void LinearSearch (Node *p, int val) {
         printf("%d Not Found in the list\n", val);
 }
 
+void BinarySearch (Node *p, int val) {
+    int found = 0, l = 0, h = RCount(p) - 1, i = 0;
+
+    if (p == NULL) return;
+
+
+    while (l <= h) {
+        int mid = (l + h) / 2;
+
+        Node* temp = p;
+        for (int i = 0; i < mid && temp; i++) {
+            temp = temp->next;
+        }
+        if (!temp) break;
+
+        if (temp->data == val){
+            found = 1;
+            break;
+        }
+        else if (temp->data < val) {
+            l = mid + 1;
+        } else {
+            h = mid - 1;
+        }
+
+    }
+    if(found)
+        printf("%d Found in the list\n", val);
+    else 
+        printf("%d Not Found in the list\n", val);
+
+}
+
 bool isSorted () {
     Node* fast = first;
     Node* slow = NULL;
@@ -379,9 +412,8 @@ void ReverseRec (Node* q, Node* p) {
         first = q;
 }
 
-void Concat(Node* q) {
-    Node* p = first;
-
+void Concat(Node*p, Node* q) {
+    // third = p;
     while(p->next) 
         p = p->next;
     p->next = q;
@@ -439,6 +471,7 @@ int main()
     // DisplayMax(first);
     // DisplayMin(first);
     // LinearSearch(first, 24);
+    // BinarySearch(first, 3);
     // printf("Length is: %d\n", RCount(first));
     // printf("Sum is: %d\n", RSum(first));
     // insertSorted(5);
@@ -455,11 +488,14 @@ int main()
     // rmDupS2 ();
     // Reverse();
     // ReverseRec(NULL, first);
-
-    RDisplay(second);
-    printf("\n");
-    Merge(first, second);
-    RDisplay(third);
-    printf("\n");
+    // Concat(first, second);
+    // RDisplay(first);
+    // printf("\n")
+    // RDisplay(second);
+    // printf("\n");
+    // Merge(first, second);
+    // RDisplay(third);
+    // printf("\n");
+    
     return 0;
 }
