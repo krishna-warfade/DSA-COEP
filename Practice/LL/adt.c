@@ -7,7 +7,8 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-Node *first; //head
+Node *first = NULL; //head
+Node *second = NULL, *third = NULL, *last = NULL;
 
 Node* init(int val) {
     Node* newnode = (Node*)malloc(sizeof(Node));
@@ -46,13 +47,13 @@ void insertEnd (int val) {
 
 void insertEnd2 (int x) {
     Node* newnode = init(x);
-    Node* last;
+    Node* lst;
 
     if (first == NULL) {
-        first = last = newnode;
+        first = lst = newnode;
     } else {
-        last->next = newnode;
-        last = newnode;
+        lst->next = newnode;
+        lst = newnode;
     }
 }
 
@@ -96,7 +97,10 @@ void insertSpec (int val, int idx) {
 
 void insertSorted (int val) {
     Node* newnode = init(val);
-    if (first == NULL) first = newnode;
+    if (first == NULL) {
+        first = newnode;
+        return;
+    }
     Node* slow = NULL;
     Node* fast = first;
 
@@ -180,6 +184,24 @@ void create (int A[], int n) {
     }
 }
 
+void create2(int A[], int n) {
+    int i;
+
+    Node *newnode, *last; //since traversing till last
+
+    // first = (Node*)malloc(sizeof(Node));
+    // first->data = A[0];
+    second = init(A[0]);
+    last = second;
+
+    for (i = 1; i < n; i++) {
+        newnode = init(A[i]);
+
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
 void Display (Node* p) {
     while(p) {
         printf("%d ", p->data);
@@ -244,6 +266,39 @@ void LinearSearch (Node *p, int val) {
         printf("%d Not Found in the list\n", val);
 }
 
+void BinarySearch (Node *p, int val) {
+    int found = 0, l = 0, h = RCount(p) - 1, i = 0;
+
+    if (p == NULL) return;
+
+
+    while (l <= h) {
+        int mid = (l + h) / 2;
+
+        Node* temp = p;
+        for (int i = 0; i < mid && temp; i++) {
+            temp = temp->next;
+        }
+        if (!temp) break;
+
+        if (temp->data == val){
+            found = 1;
+            break;
+        }
+        else if (temp->data < val) {
+            l = mid + 1;
+        } else {
+            h = mid - 1;
+        }
+
+    }
+    if(found)
+        printf("%d Found in the list\n", val);
+    else 
+        printf("%d Not Found in the list\n", val);
+
+}
+
 bool isSorted () {
     Node* fast = first;
     Node* slow = NULL;
@@ -277,8 +332,7 @@ Node* rmDupS () {
 }
 
 Node* rmDupS2 () {
-    if (first == NULL) return NULL;
-    if (first->next == NULL) return first;
+    if (first == NULL || first->next == NULL) return first;
 
     Node* slow = first;
     Node* fast = first->next; // first->next
@@ -298,7 +352,7 @@ Node* rmDupS2 () {
     return first;
 }
 
-void Reverse2 () {
+void Reverse2 () { //reversing data using array
     Node* temp = first;
     int *arr = (int*)malloc(100 * sizeof(int));
     int i = 0;
@@ -318,7 +372,7 @@ void Reverse2 () {
     free(arr);
 }
 
-void Reverse () {
+void Reverse () { // using sliding pointers
     Node* prev = NULL;
     Node* curr = NULL;
     Node* n = first;
@@ -358,11 +412,83 @@ void ReverseRec (Node* q, Node* p) {
         first = q;
 }
 
+void Concat(Node*p, Node* q) {
+    // third = p;
+    while(p->next) 
+        p = p->next;
+    p->next = q;
+    q = NULL; //second pointer removed
+}
+
+void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted list
+    if (p == NULL) {
+        third = q;
+        return;
+    }
+    if (q == NULL) {
+        third = p;
+        return;
+    }
+    if (p->data <= q->data) { //init 3rd & last
+        third = last = p;
+        p = p->next;
+    } else {
+        third = last = q;
+        q = q->next;
+    }
+    last->next = NULL;
+
+    while (p && q) {
+        if (p->data <= q->data) {
+            last->next = p;
+            last = p;
+            p = p->next;
+        } else {
+            last->next = q;
+            last = q;
+            q = q->next;
+        }
+        last->next = NULL;
+    }
+    if (p) last->next = p;
+    if (q) last->next = q;
+}
+
+void CheckLoop (Node* p) {
+    if (!p) {
+        printf("Cycle Not Found\n");
+        return;
+    }
+
+    int found = 0;
+
+    Node* slow = p;
+    Node* fast = p;
+
+    do {
+        slow = slow->next;
+        fast = fast->next;
+        fast = (fast != NULL) ? fast->next : NULL;
+    } while (slow && fast);
+    printf("Cycle Not Found\n");
+
+    // while (p->next != p && p->next) {
+    //     p = p->next;
+    // }
+    // if(p->next == p) {
+    //     printf("Cycle Found\n");
+    //     return;
+    // }
+    // printf("Cycle Not Found\n");
+}
+
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
+    int B[] = {2, 4, 6};
 
     create(A, sizeof(A) / sizeof(A[0]));
+    create2(B, sizeof(B) / sizeof(B[0]));
 
     // insertBeg(15);
     // insertBeg2(&first, 25);
@@ -373,6 +499,7 @@ int main()
     // DisplayMax(first);
     // DisplayMin(first);
     // LinearSearch(first, 24);
+    // BinarySearch(first, 3);
     // printf("Length is: %d\n", RCount(first));
     // printf("Sum is: %d\n", RSum(first));
     // insertSorted(5);
@@ -388,7 +515,16 @@ int main()
     // else printf("List is Unsorted");
     // rmDupS2 ();
     // Reverse();
-    ReverseRec(NULL, first);
-    RDisplay(first);
+    // ReverseRec(NULL, first);
+    // Concat(first, second);
+    // RDisplay(first);
+    // printf("\n")
+    // RDisplay(second);
+    // printf("\n");
+    // Merge(first, second);
+    // RDisplay(third);
+    // printf("\n");
+    CheckLoop(first);
+    
     return 0;
 }
