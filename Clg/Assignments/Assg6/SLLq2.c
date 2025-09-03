@@ -1,17 +1,10 @@
 /*
-Q1. Implement a menu-driven polynomial manipulation using a singly linked list for 
-following operations: 
-i.  Addition of polynomials 
-ii. Subtraction of polynomials 
-
 Q2. Implement a Singly Linked List and available list using array and perform the following 
 Menu driven operations: 
 i.   Insert an element at the beginning 
 ii.  Traverse a list 
 iii. Delete the first element 
 */
-
-// Q2.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,6 +23,23 @@ Node* init(int val) {
     newnode->next = NULL;
     return newnode;
 }
+
+void create (int A[], int n) {
+    int i;
+
+    Node *newnode, *last; //since traversing till last
+
+    head = init(A[0]);
+    last = head;
+
+    for (i = 1; i < n; i++) {
+        newnode = init(A[i]);
+
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
 
 void insertBeg (int val) {
     Node* node = init(val);
@@ -68,19 +78,41 @@ void Display (Node* p) {
 int main()
 {
     int A[] = {1, 3, 5, 7, 9};
+    int val, choice;
 
     create(A, sizeof(A) / sizeof(A[0]));
-    Display(head);
-    printf("\n");
-    insertBeg(6);
-    Display(head);
-    printf("\n");
-    Traverse();
-    Display(head);
-    printf("\n");
-    DeleteBeg();
-    Display(head);
-    printf("\n");
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Display List\n");
+        printf("2. Insert at Beginning\n");
+        printf("3. Traverse List\n");
+        printf("4. Delete from Beginning\n");
+        printf("5. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                Display(head);
+                break;
+            case 2:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                insertBeg(val);
+                break;
+            case 3:
+                Traverse();
+                break;
+            case 4:
+                DeleteBeg();
+                break;
+            case 5:
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
 
     return 0;
 }
