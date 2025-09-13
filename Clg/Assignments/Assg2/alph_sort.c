@@ -5,7 +5,7 @@
 #define MAX_WORDS 64
 
 int tokenize_words(char *line, char *words[]) {
-    char *token = strtok(line, ",\n");
+    char *token = strtok(line, ",\n"); // tokenize at "," and newline
     int wordlen = 0;
 
     while (token != NULL && wordlen < MAX_WORDS) {
