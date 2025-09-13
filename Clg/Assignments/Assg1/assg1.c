@@ -18,7 +18,7 @@ int main() {
     }
     printf("\n");
     printf("Array after removing duplicates: \n");
-    for (int k = 0; k <= i; k++) {
+    for (int k = 0; k <= i; k++) { // New Length = i
         printf("%.2f ", arr[k]);
     }
     printf("\n");
