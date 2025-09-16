@@ -103,16 +103,88 @@ void Display (Node *p) {
     printf("\n");
 }
 
-void RDisplay (Node *p) {
-    // flag tells how many cycles
+void Traverse (Node *p) {
+    if (p == NULL) return;
+    do {
+        p = p->next;
+    } while(p != head);
+    printf("Traversed Successfully\n");
+}
 
-    static int flag = 0; // limited to a function
-    if (p != head || flag == 0) {
-        flag = 1;
-        printf("%d ", p->val);
-        RDisplay(p->next);
+int Count (Node *p) {
+    int cnt = 0;
+
+    if (p == NULL) return 0;
+    do {
+        p = p->next;
+        cnt++;
+    } while (p != head);
+    return cnt;
+}
+
+void Search (Node *p, int x) {
+    int found = 0;
+
+    if (p == NULL) return;
+
+    do {
+        if (p->val == x) {
+            found = 1;
+            break;
+        }
+        p = p->next;
+    } while (p != head);
+    if (found) {
+        printf("%d Found\n", x);
+        return;
+    } else {
+        printf("%d Not Found\n", x);
     }
-    flag = 0;
+}
+
+int Delete (Node *p, int idx) {
+    Node* temp;
+    int i, x;
+
+    if (idx < 0 || idx > Count(head) || head == NULL)
+        return -1;
+    if (idx == 1) {
+        while (p->next != head)
+            p = p->next;
+        x = head->val;
+
+        if (head == p) {
+            free(head);
+            head = NULL;
+        } else {
+            p->next = head->next;
+            free(head);
+            head = p->next;
+        }
+    } else {
+        for (int i = 1; i < idx - 1; i++)
+            p = p->next;
+        temp = p->next;
+        p->next = temp->next;
+        x = temp->val;
+        free(temp);
+    }
+    return x;
+}
+
+void Reverse (Node *p) {
+    if (head == NULL) return;
+    Node *curr = head, *prev = NULL, *next = NULL;
+
+    do {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    } while (curr != head);
+
+    head->next = prev;
+    head = prev;
 }
 
 int main()
@@ -121,9 +193,22 @@ int main()
 
     create(A, sizeof(A)/ sizeof(A[0]));
     Display(head);
+    printf("The length of list is %d\n", Count(head));
     head = insertBeg(10);
     Display(head);
-    head = insert(20, 6);
-    RDisplay(head);
+    printf("The length of list is %d\n", Count(head));
+    head = insert(20, 6); // insert end
+    Display(head);
+    Traverse(head);
+    printf("The length of list is %d\n", Count(head));
+    Search(head, 24);
+
+    printf("Deleted the node with value %d\n", Delete(head, 7));
+    Display(head);
+
+    Reverse(head);
+    Display(head);
+    Reverse(head);
+    Display(head);
     return 0;
 }
