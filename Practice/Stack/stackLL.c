@@ -81,4 +81,6 @@ int main() {
 
     printf("TOP to BOTTOM : ");
     traverse(top);
+
+    return 0;
 }

@@ -15,25 +15,23 @@ Node *top = NULL;
 void push (char x) { // insert
     Node *newnode = (Node*)malloc(sizeof(Node));
 
-    if (newnode == NULL) {
+    if (newnode == NULL) 
         return;
-    }
-    else { 
-        newnode->data = x;
-        newnode->next = top;
-        top = newnode;
-    }
+    newnode->data = x;
+    newnode->next = top;
+    top = newnode;
 }
 
 char pop () { // delete
-    char x;
 
     if (top == NULL)
         return -1;
-    else {
-        x = top->data;
-        top = top->next;
-    }
+
+    Node* temp = top;
+    char x = temp->data;
+    top = top->next;
+    free(temp);
+
     return x;
 }
 
@@ -52,7 +50,7 @@ int prece (char opr) {
         return 3;
     else if (opr == '+' || opr == '-')
         return 2;
-    else if (opr = '(')
+    else if (opr == '(')
         return 1;
     return 0;
 }
@@ -60,34 +58,33 @@ int prece (char opr) {
 void eval (char* s) {
     int i = 0, j = 0;
     char res[100] = "";
-    char x;
 
     while (s[i] != '\0') {
-        if (s[i] == '(') {
+        if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z'))
+                res[j++] = s[i];
+        else if (s[i] == '(')
             push(s[i]);
-        } else if (s[i] == ')') {
-            if (topele() != '(') {
-                res[j] = pop();
-                j++;
-            }
-        } else {
-            while ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z')) {
-                res[j++] = s[i++];
-            }
-            if (prece(topele) > (pop() && prece(topele)))
-                push(s[i]);
+        else if (s[i] == ')') {
+            while (topele() != '(')
+                res[j++] = pop();
+            pop();
+        } else {            
+            while (top != NULL && prece(topele()) >= prece((s[i])))
+                res[j++] = pop();
+            push(s[i]);
         }
         i++;
     }
-    while (topele() != '(') {
+    while (top != NULL) {
         res[j++] = pop();
     }
+    res[j] = '\0';
     printf("%s\n", res);
 }
 
 int main () {
-    char s[100] = "(a+b)";
+    char s[100] = "((a+b)-c*d-e+j)";
 
-    eval(&s);
+    eval(s);
     return 0;
 }
