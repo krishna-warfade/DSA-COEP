@@ -18,7 +18,7 @@ public:
         for (auto i : adj) {
             cout << i.first << "-> ";
             for (auto j:adj)
-                cout << j << ", ";
+                printf("%d, ", j);
             cout << endl;
         }
     }
