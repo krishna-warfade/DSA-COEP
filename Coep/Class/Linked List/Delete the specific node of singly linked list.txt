@@ -1,0 +1,17 @@
+Algorithm to delete the specific node 
+//This algorithm deletes the specific node. The element which you want to //delete that will be stored in num. 
+
+Step 1: if head==NULL
+           print "List is Empty"
+           go to step 10
+        [End of If]
+Step 2: set temp=head
+Step 3: set prev=temp
+Step 4: Repeat steps 5 and 6 while temp->data!=num
+Step 5:      set prev=temp
+Step 6:      set temp=temp->next
+	[End of loop]
+Step 7: set ptr=temp
+Step 8: prev->next=temp->next
+Step 9: Free ptr
+Step 10: Exit
