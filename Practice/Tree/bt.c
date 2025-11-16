@@ -11,13 +11,27 @@ Node *root = NULL;
 
 Node *Rsearch(int key, Node *t) {
     if (!t)
-        return NULL;
+        return t;
     if (t->data == key)
         return t;
     else if (key > t->data)
         return Rsearch(key, t->rchild);
     else
         return Rsearch(key, t->lchild);
+}
+
+Node *Search (int key, Node *t) {
+    if (!t)
+        return t;
+    while (t) {
+        if (t->data == key)
+            return t;
+        if (key < t->data)
+            t = t->lchild;
+        else
+            t = t->rchild;
+    }
+    return t;
 }
 
 int Rcount (Node *root) {
@@ -77,6 +91,7 @@ Node *inorder_predec (Node *p) { // for largest value in left subtree by going a
     return p;
 }
 
+// (get left most)
 Node *inorder_succ (Node *p) { // receives right subtree of a node and goes as left as possible
     while (p && p->lchild)
         p = p->lchild;
@@ -130,9 +145,10 @@ int main() {
     printf("\n");
 
     Node* found = Rsearch(6, root);
-    if (found)
-        ("%d\n", found->data);
+    if (found) printf("Search found - %d\n", found->data);
+    else printf("Search - Not Found\n");
     
+    printf("Deleting a node\n");
     root = delete(6, root);
     inorder(root);
     printf("\n");
