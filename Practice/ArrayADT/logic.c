@@ -117,19 +117,6 @@ int linearSearch(array *arr, int key){
     return -1;
 }
 
-void bubble_sort(array *arr){
-	int i, j, temp;
-	for(int i = 0; i < arr -> len - 1; i++){
-		for(int j = 0; j < arr -> len - 1 - i; j++){
-			if(arr -> A[j] > arr -> A[j+1]){
-				temp = arr -> A[j];
-				arr -> A[j] = arr -> A[j + 1];
-				arr -> A[j + 1] = temp;
-			}
-		}
-	}
-}
-
 int binarySearch(array arr, int key) {
     int l, h, mid, result = -1;
     l = 0;
@@ -164,6 +151,19 @@ int RBinSearch(array arr, int l, int h, int key){
             return RBinSearch(arr, mid + 1, h, key);
     }
     return -1;
+}
+
+void bubble_sort(array *arr){
+	int i, j, temp;
+	for(int i = 0; i < arr -> len - 1; i++){
+		for(int j = 0; j < arr -> len - 1 - i; j++){
+			if(arr -> A[j] > arr -> A[j+1]){
+				temp = arr -> A[j];
+				arr -> A[j] = arr -> A[j + 1];
+				arr -> A[j + 1] = temp;
+			}
+		}
+	}
 }
 
 void insertion_sort(array *arr) {
