@@ -11,7 +11,7 @@ Node *root = NULL;
 
 Node *Rsearch(int key, Node *t) {
     if (!t)
-        return NULL;
+        return t;
     if (t->data == key)
         return t;
     else if (key > t->data)
@@ -20,10 +20,36 @@ Node *Rsearch(int key, Node *t) {
         return Rsearch(key, t->lchild);
 }
 
+Node *Search (int key, Node *t) {
+    if (!t)
+        return t;
+    while (t) {
+        if (t->data == key)
+            return t;
+        if (key < t->data)
+            t = t->lchild;
+        else
+            t = t->rchild;
+    }
+    return t;
+}
+
 int Rcount (Node *root) {
     if (root)
         return 1 + Rcount(root->lchild) + Rcount(root->rchild);
     return 0;
+}
+
+int height (Node* root) {
+    int a = 0;
+    int b = 0;
+
+    if (root == 0)
+        return 0;
+    a = height(root->lchild);
+    b = height(root->rchild);
+
+    return (a > b) ? (1 + a) : (1 + b);
 }
 
 Node *insert (int x, Node *t) {
@@ -59,6 +85,48 @@ Node *insert (int x, Node *t) {
     return root;
 }
 
+Node *inorder_predec (Node *p) { // for largest value in left subtree by going as right as possible
+    while (p && p->rchild)
+        p = p->rchild;
+    return p;
+}
+
+// (get left most)
+Node *inorder_succ (Node *p) { // receives right subtree of a node and goes as left as possible
+    while (p && p->lchild)
+        p = p->lchild;
+    return p;
+}
+
+Node *delete (int key, Node *t) {
+    if (!t)
+        return NULL;
+    
+    if (key < t->data)
+        t->lchild = delete(key, t->lchild);
+    else if (key > t->data)
+        t->rchild = delete(key, t->rchild);
+    else { // key node found
+        if (!t->lchild && !t->rchild) {
+            free(t);
+            return NULL;
+        }
+        else if (height(t->lchild) > height(t->rchild)) {
+            Node *predecessor = inorder_predec(t->lchild);
+
+            t->data = predecessor->data;
+            t->lchild = delete(predecessor->data, t->lchild);
+        }
+        else {
+            Node *successor = inorder_succ(t->rchild);
+
+            t->data = successor->data;
+            t->rchild = delete(successor->data, t->rchild);
+        }
+    }
+    return t;
+}
+
 void inorder (Node *p) {
     if (p) {
         inorder(p->lchild);
@@ -67,27 +135,23 @@ void inorder (Node *p) {
     }
 }
 
-int height (Node* root) {
-    int a = 0;
-    int b = 0;
-
-    if (root == 0)
-        return 0;
-    a = height(root->lchild);
-    b = height(root->rchild);
-
-    return (a > b) ? (1 + a) : (1 + b);
-}
-
 int main() {
     root = insert(24, root);
     insert(55, root);
     insert(6, root);
     insert(18, root);
+
     inorder(root);
     printf("\n");
-    Node* found = Rsearch(6, root);
-    printf("%d\n", found->data);
 
+    Node* found = Rsearch(6, root);
+    if (found) printf("Search found - %d\n", found->data);
+    else printf("Search - Not Found\n");
+    
+    printf("Deleting a node\n");
+    root = delete(6, root);
+    inorder(root);
+    printf("\n");
+    
     return 0;
 }

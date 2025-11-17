@@ -1,15 +1,21 @@
+/*
+Alphabetically sort the items in "read.txt" file and store it in a new "sorted.txt" file.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #define MAX_LINE_LENGTH 256
 #define MAX_WORDS 64
 
-int tokenize_words(char *line, char *words[]) {
+int tokenize_words(char *line, char *words[])
+{
     char *token = strtok(line, ",\n"); // tokenize at "," and newline
     int wordlen = 0;
 
-    while (token != NULL && wordlen < MAX_WORDS) {
+    while (token && wordlen < MAX_WORDS)
+    {
         words[wordlen] = malloc(strlen(token) + 1);
+
         strcpy(words[wordlen], token);
         wordlen++;
         token = strtok(NULL, ",\n");
@@ -17,13 +23,17 @@ int tokenize_words(char *line, char *words[]) {
     return wordlen;
 }
 
-void sort_alphabetically(char *words[], int len) {
+void sort_alphabetically(char *words[], int len)
+{
     char *temp;
     int i, j;
-    
-    for (i = 0; i < len; i++) {
-        for (j = 0; j < len - i - 1; j++) {
-            if (strcmp(words[j], words[j + 1]) > 0) {
+
+    for (i = 0; i < len; i++)
+    {
+        for (j = 0; j < len - i - 1; j++)
+        {
+            if (strcmp(words[j], words[j + 1]) > 0) // i.e words[j] > words[j + 1]
+            {
                 temp = words[j];
                 words[j] = words[j + 1];
                 words[j + 1] = temp;
@@ -32,8 +42,10 @@ void sort_alphabetically(char *words[], int len) {
     }
 }
 
-void free_words(char* words[], int len) {
-    for (int i = 0; i < len; i++) free(words[i]);
+void free_words(char *words[], int len)
+{
+    for (int i = 0; i < len; i++)
+        free(words[i]);
 }
 
 // void write_words_to_file(FILE *fpw, char *words[], int len) {
@@ -46,30 +58,36 @@ void free_words(char* words[], int len) {
 //     }
 // }
 
-int main() {
+int main()
+{
     FILE *fpr, *fpw;
     char line[256];
     char *words[64];
     int i = 0, wordlen = 0;
 
     fpr = fopen("read.txt", "r");
-
     fpw = fopen("sorted.txt", "w");
 
-    if (fpr == NULL || fpw == NULL) {
+    if (fpr == NULL || fpw == NULL)
+    {
         printf("Error opening file");
         return 1;
     }
 
     /*LINE BY LINE*/
 
-    while (fgets(line, MAX_LINE_LENGTH, fpr) != NULL) {
+    while (fgets(line, MAX_LINE_LENGTH, fpr))
+    {
         wordlen = tokenize_words(line, words);
+
         sort_alphabetically(words, wordlen);
+
         // Write sorted words to file
-        for (int i = 0; i < wordlen; i++) {
+        for (int i = 0; i < wordlen; i++)
+        {
             fputs(words[i], fpw);
-            if (i < wordlen - 1) fputc(' ', fpw); // space between words
+            if (i < wordlen - 1)
+                fputc(' ', fpw); // space between words
         }
         free_words(words, wordlen); // free each word after writing
     }
@@ -88,13 +106,13 @@ int main() {
     //         //write manually char by char to file
     //         write_words_to_file(fpw, words, wordlen);
     //         free_words(words, wordlen);
-            
+
     //     } else {
     //         if (i < MAX_LINE_LENGTH - 1) {
     //             line[i] = ch;
     //             i++;
     //         }
-    //     }      
+    //     }
     // }
     // if (i > 0) // handle the last line if it doesn't end with a newline OR single line input
     // {
