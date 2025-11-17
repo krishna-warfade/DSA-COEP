@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "header.h"
 
+array arr1, arr2, arr3;
+
 void init(array *arr, int size){
     arr -> size = size;
     arr -> len = 0;
@@ -230,9 +232,8 @@ void selection_sort(array *arr){
 	}
 }
 
-// Taken from ArrayADTTanishq
-
-int isSorted(array arr){
+//
+int isSorted(array arr) {
     int i;
     for(i = 0; i < arr.len - 1; i++){
         if(arr.A[i] > arr.A[i + 1])
@@ -241,7 +242,7 @@ int isSorted(array arr){
     return 1;
 }
 
-void REarrange(array *arr){
+void REarrange(array *arr) { // same as move neg
     int i = 0, j = arr -> len - 1;
     while(i < j){
         while(arr -> A[i] < 0){i++;}
@@ -251,33 +252,33 @@ void REarrange(array *arr){
     }
 }
 
-struct Array * Merge(struct Array *arr1,struct Array *arr2){
+array *Merge(array *arr1, array *arr2) {
     int i,j,k;
     i=j=k=0;
-    struct Array *arr3=(struct Array *)malloc(sizeof(struct Array));
+    array *arr3=(array *)malloc(sizeof(array));
 
-    while(i < arr1 -> length && j < arr2 -> length){
+    while(i < arr1->len && j < arr2 -> len){
         if(arr1 -> A[i] < arr2 -> A[j])
             arr3 -> A[k++] = arr1 -> A[i++];
         else
             arr3 -> A[k++] = arr2 -> A[j++];
     }
-    for(;i < arr1 -> length; i++)
+    for(;i < arr1 -> len; i++)
         arr3 -> A[k++] = arr1 -> A[i];
-    for(;j < arr2 -> length; j++)
+    for(;j < arr2 -> len; j++)
         arr3 -> A[k++] = arr2 -> A[j];
-    arr3 -> length = arr1 -> length + arr2 -> length;
+    arr3 -> len = arr1 -> len + arr2 -> len;
     arr3 -> size=10;
     return arr3;
 }
 
-struct Array* Union(struct Array *arr1,struct Array *arr2){
+array *Union(array *arr1,array *arr2) {
     int i,j,k;
     i=j=k=0;
 
-    struct Array *arr3=(struct Array *)malloc(sizeof(struct Array));
+    array *arr3=(array *)malloc(sizeof(array));
 
-    while(i < arr1 -> length && j < arr2 -> length){
+    while(i < arr1 -> len && j < arr2 -> len){
         if(arr1 -> A[i] < arr2 -> A[j])
             arr3 -> A[k++] = arr1 -> A[i++];
         else if(arr2 -> A[j] < arr1 -> A[i])
@@ -287,24 +288,24 @@ struct Array* Union(struct Array *arr1,struct Array *arr2){
             j++;
         }
     }  
-    for(;i < arr1 -> length; i++)
+    for(;i < arr1 -> len; i++)
         arr3 -> A[k++]= arr1 -> A[i];
-    for(;j < arr2 -> length; j++)
+    for(;j < arr2 -> len; j++)
         arr3 -> A[k++]= arr2 -> A[j];
 
-    arr3 -> length = k;
+    arr3 -> len = k;
     arr3 -> size = 10;
 
     return arr3;
 }
 
-struct Array* Intersection(struct Array *arr1,struct Array *arr2){
+array *Intersection(array *arr1,array *arr2) {
     int i,j,k;
     i=j=k=0;
 
-    struct Array *arr3 = (struct Array *)malloc(sizeof(struct Array));
+    array *arr3 = (array *)malloc(sizeof(array));
 
-    while(i < arr1 -> length && j < arr2 -> length){
+    while(i < arr1 -> len && j < arr2 -> len){
         if(arr1 -> A[i] < arr2 -> A[j])
             i++;
         else if(arr2 -> A[j] < arr1 -> A[i])
@@ -315,19 +316,19 @@ struct Array* Intersection(struct Array *arr1,struct Array *arr2){
         }
     }
 
-    arr3 -> length = k;
+    arr3 -> len = k;
     arr3 -> size = 10;
 
     return arr3;
 }
 
-struct Array* Difference(struct Array *arr1,struct Array *arr2){
+array *Difference(array *arr1,array *arr2) {
     int i,j,k;
     i=j=k=0;
 
-    struct Array *arr3 = (struct Array *)malloc(sizeof(struct Array));
+    array *arr3 = (array *)malloc(sizeof(array));
 
-    while(i < arr1 -> length && j < arr2 -> length){
+    while(i < arr1->len && j < arr2 -> len){
         if(arr1 -> A[i] < arr2 -> A[j])
             arr3 -> A[k++] = arr1 -> A[i++];
         else if(arr2 -> A[j] < arr1 -> A[i])
@@ -338,10 +339,10 @@ struct Array* Difference(struct Array *arr1,struct Array *arr2){
         }
     }
     
-    for(;i < arr1 -> length; i++)
+    for(;i < arr1 -> len; i++)
     arr3 -> A[k++] = arr1 -> A[i];
 
-    arr3 -> length = k;
+    arr3 -> len = k;
     arr3 -> size = 10;
 
     return arr3;

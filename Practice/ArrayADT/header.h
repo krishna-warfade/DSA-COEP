@@ -24,5 +24,12 @@ void insertion_sort(array *arr);
 void swap(int *a, int *b);
 int partition(array *arr, int low, int high);
 void quickSort(array *arr, int low, int high);
-
 void selection_sort(array *arr);
+
+//
+int isSorted(array arr);
+void REarrange(array *arr);
+array *Merge(array *arr1, array *arr2);
+array *Union(array *arr1,array *arr2);
+array *Intersection(array *arr1,array *arr2);
+array *Difference(array *arr1,array *arr2);
