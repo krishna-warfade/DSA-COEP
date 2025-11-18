@@ -7,7 +7,7 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-Node *first = NULL; //head
+Node *first = NULL; // head
 Node *second = NULL, *third = NULL, *last = NULL;
 
 Node* init(int val) {
@@ -15,6 +15,40 @@ Node* init(int val) {
     newnode->data = val;
     newnode->next = NULL;
     return newnode;
+}
+
+void create (int A[], int n) {
+    int i;
+
+    Node *newnode, *last; // since traversing till last
+
+    // first = (Node*)malloc(sizeof(Node));
+    // first->data = A[0];
+    first = init(A[0]); // head
+    last = first;
+
+    for (i = 1; i < n; i++) {
+        newnode = init(A[i]);
+
+        last->next = newnode;
+        last = newnode;
+    }
+}
+
+void create2(int A[], int n) {
+    int i;
+
+    Node *newnode, *last; // since traversing till last
+
+    second = init(A[0]); // head
+    last = second;
+
+    for (i = 1; i < n; i++) {
+        newnode = init(A[i]);
+
+        last->next = newnode;
+        last = newnode;
+    }
 }
 
 void insertBeg (int val) {
@@ -26,7 +60,7 @@ void insertBeg (int val) {
 void insertBeg2(Node** headRef, int val) {
     Node* newnode = init(val);
 
-    newnode->next = *headRef; // link new node to current head
+    newnode->next = *headRef; // link new node to current head(any list can be passed here), which is passed as argument
     *headRef = newnode;       // update head itself
 }
 
@@ -57,7 +91,7 @@ void insertEnd2 (int x) {
     }
 }
 
-void insertSpec (int val, int idx) {
+void insertSpec (int val, int idx) { // insert at a specified index, O(n)
     if (idx < 0) {
         printf("Invalid index\n");
         return;
@@ -66,16 +100,16 @@ void insertSpec (int val, int idx) {
         insertBeg(val);
         return;
     }
+
     Node* newnode = init(val);
     Node* temp = first;
-    int j = 0; //int len = 0;
+    int j = 0;
 
-    while (temp && j < idx - 1) {
+    while (temp && j < idx - 1) { // reach node before reqd posn
         j++;
-        temp = temp->next; //reached the inserting position
+        temp = temp->next;
     }
-    if (temp == NULL) //temp = NULL during i.e idx > length of list
-    {
+    if (temp == NULL) {// temp = NULL, reached end of the list (during i.e idx > length of list)
         printf("Invalid index\n");
         free(newnode);
         return;
@@ -97,22 +131,25 @@ void insertSpec (int val, int idx) {
 
 void insertSorted (int val) {
     Node* newnode = init(val);
+    // empty list
     if (first == NULL) {
         first = newnode;
         return;
     }
-    Node* slow = NULL;
-    Node* fast = first;
 
-    while(fast && fast->data < val) { // fast jumps to just next greater element
+    Node* fast = first; // moves and finds the position
+    Node* slow = NULL; // keeps the pointer to previous node
+
+    // If we use just 1 temp pointer, it would fail by going to the just next element after comparison of node's data and the value to be inserted. Hence we need to store the previously check data before jumping.
+    while(fast && fast->data < val) { // fast jumps to just next greater element, i.e fast stops at first node whose data >= val
         slow = fast;
         fast = fast->next;
     }
-    if (fast == first) {
+    if (slow == NULL) { // insert at beginning, fast == first is wrong
         newnode->next = first;
         first = newnode;
-    } else { //fast is not first, can insert node btwn fast and slow
-        newnode->next = fast;
+    } else { // fast is not first, can insert node btwn fast and slow or at end
+        newnode->next = fast; // OR slow->next
         slow->next = newnode;
     }
 }
@@ -123,9 +160,9 @@ void DeleteBeg() {
 
     if (first->next == NULL) {
         free(first);
-        first = NULL;
+        first = NULL; // bcoz first will still point to freed memory
     } else {
-        first = first->next;
+        first = first->next; // OR temp->next
         free(temp);
     }
 }
@@ -134,7 +171,7 @@ void DeleteEnd() {
     if (first == NULL) return;
     if (first->next == NULL) {
         free(first);
-        first = NULL; //bcz first still points to freed memory
+        first = NULL; // bcoz first will still point to freed memory
         return;
     }
     Node* temp = first;
@@ -142,7 +179,7 @@ void DeleteEnd() {
     while (temp->next->next) 
         temp = temp->next;
     free(temp->next);
-    temp->next = NULL;
+    temp->next = NULL; // bcoz temp will still point to freed memory
 }
 
 void DeletePos(int pos) {
@@ -154,50 +191,16 @@ void DeletePos(int pos) {
 
     Node* slow = NULL;
     Node* fast = first;
-    int i = 1;
+    int i = 0;
 
-    while (fast && i < pos) {
+    while (fast && i < pos - 1) {
         slow = fast;
         fast = fast->next;
         i++;
     }
-    if (fast == NULL) return; //pos is out of bound
+    if (fast == NULL) return; // pos is out of bound
     slow->next = fast->next;
     free(fast);
-}
-
-void create (int A[], int n) {
-    int i;
-
-    Node *newnode, *last; //since traversing till last
-
-    // first = (Node*)malloc(sizeof(Node));
-    // first->data = A[0];
-    first = init(A[0]);
-    last = first;
-
-    for (i = 1; i < n; i++) {
-        newnode = init(A[i]);
-
-        last->next = newnode;
-        last = newnode;
-    }
-}
-
-void create2(int A[], int n) {
-    int i;
-
-    Node *newnode, *last; //since traversing till last
-
-    second = init(A[0]);
-    last = second;
-
-    for (i = 1; i < n; i++) {
-        newnode = init(A[i]);
-
-        last->next = newnode;
-        last = newnode;
-    }
 }
 
 void Display (Node* p) {
@@ -265,7 +268,7 @@ void LinearSearch (Node *p, int val) {
 }
 
 void BinarySearch (Node *p, int val) {
-    int found = 0, l = 0, h = RCount(p) - 1, i = 0;
+    int found = 0, l = 0, h = RCount(p) - 1;
 
     if (p == NULL) return;
 
@@ -273,7 +276,7 @@ void BinarySearch (Node *p, int val) {
     while (l <= h) {
         int mid = (l + h) / 2;
 
-        Node* temp = p;
+        Node* temp = p; // to go till mid node
         for (int i = 0; i < mid && temp; i++) {
             temp = temp->next;
         }
@@ -300,7 +303,16 @@ void BinarySearch (Node *p, int val) {
 bool isSorted () {
     Node* fast = first;
     Node* slow = NULL;
-    //OR can store prev node's value and compare with a pointer - single ptr needed
+    // OR can store prev node's value in a variable x and compare with a pointer - single ptr needed
+
+    // int x;
+
+    // while (fast->next) {
+    //     x = fast->data;
+    //     fast = fast->next;
+    //     if (x > fast->data)
+    //         return false;
+    // }
 
     while (fast->next) {
         slow = fast;
@@ -314,8 +326,7 @@ bool isSorted () {
 Node* rmDupS () {
     Node* temp = first;
 
-    if (temp == NULL) return NULL;
-    if (temp->next == NULL) return first;
+    if (temp == NULL || temp->next == NULL) return first;
 
     while (temp && temp->next) { //checking temp bcoz in the if part temp can point to null
         if (temp->data == (temp->next)->data)
@@ -339,7 +350,7 @@ Node* rmDupS2 () {
         if (slow->data == fast->data) {
             Node* dup = fast;
             slow->next = fast->next; // dup->next
-            fast = fast->next;
+            fast = slow->next;
             free(dup);
         }
         else {
@@ -356,35 +367,34 @@ void Reverse2 () { //reversing data using array
     int i = 0;
 
     while (temp) {
-        arr[i] = temp->data;
+        arr[i++] = temp->data;
         temp = temp->next;
-        i++;
     }
     i--; // last index
     temp = first;
     while (i >= 0) {
-        temp->data = arr[i];
+        temp->data = arr[i--];
         temp = temp->next;
-        i--;
     }
     free(arr);
 }
 
-void Reverse () { // using sliding pointers
+void Reverse () { // using sliding pointers, fibonacci logic
     Node* prev = NULL;
     Node* curr = NULL;
-    Node* n = first;
+    Node* nxt = first;
 
-    while (n) {
+    while (nxt) {
         prev = curr;
-        curr = n;
-        n = n->next;
+        curr = nxt;
+        nxt = nxt->next;
         curr->next = prev;
     }
     first = curr;
 }
 
 /*
+leetcode
 struct ListNode* reverse (struct ListNode* l) {
     struct ListNode* prev = NULL;
     struct ListNode* curr = NULL;
@@ -404,7 +414,7 @@ struct ListNode* reverse (struct ListNode* l) {
 void ReverseRec (Node* q, Node* p) {
     if (p) {
         ReverseRec(p, p->next);
-        p->next = q; //recursive call pointing to previous
+        p->next = q; // recursive call pointing to previous
     }
     else
         first = q;
@@ -415,10 +425,10 @@ void Concat(Node*p, Node* q) {
     while(p->next) 
         p = p->next;
     p->next = q;
-    q = NULL; //second pointer removed
+    q = NULL; // second pointer removed
 }
 
-void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted list
+void Merge (Node* p, Node* q) { // combining 2 sorted list into single sorted list
     if (p == NULL) {
         third = q;
         return;
@@ -427,7 +437,7 @@ void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted lis
         third = p;
         return;
     }
-    if (p->data <= q->data) { //init 3rd & last
+    if (p->data <= q->data) { // init 3rd- starting point of merged list & init last ptr as well
         third = last = p;
         p = p->next;
     } else {
@@ -448,6 +458,7 @@ void Merge (Node* p, Node* q) { //combining 2 sorted list into single sorted lis
         }
         last->next = NULL;
     }
+    // attach remaining nodes
     if (p) last->next = p;
     if (q) last->next = q;
 }
@@ -458,17 +469,20 @@ void CheckLoop (Node* p) {
         return;
     }
 
-    int found = 0;
-
     Node* slow = p;
     Node* fast = p;
 
     do {
         slow = slow->next;
-        fast = fast->next;
-        fast = (fast != NULL) ? fast->next : NULL;
-    } while (slow && fast);
-    printf("Cycle Not Found\n");
+
+        if(fast) fast = fast->next;
+        if(fast) fast = fast->next;
+    } while (slow && fast && slow != fast);
+    
+    if (slow == fast)
+        printf("Cycle Found\n");
+    else
+        ("Cycle Not Found\n");
 
     // while (p->next != p && p->next) {
     //     p = p->next;

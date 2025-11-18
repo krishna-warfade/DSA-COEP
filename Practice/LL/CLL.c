@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Delete remaining
+
 typedef struct Node {
     int val;
     struct Node* next;
