@@ -3,20 +3,22 @@
 #include <stdbool.h>
 
 typedef struct Node {
+    struct Node *prev;
     int data;
-    struct Node *prev, *next;
+    struct Node *next;
 } Node;
 
-Node* head = NULL;
+Node* first = NULL;
 
 void create (int A[], int n) {
     Node *newnode, *last;
 
-    head = (Node*)malloc(sizeof(Node));
-    head->prev = head->next = NULL;
-    head->data = A[0];
+    first = (Node*)malloc(sizeof(Node));
+    first->prev = NULL;
+    first->data = A[0];
+    first->next = NULL;
 
-    last = head;
+    last = first;
 
     for (int i = 1; i < n; i++) {
         newnode = (Node *)malloc(sizeof(Node));
@@ -59,47 +61,44 @@ void Traverse(Node *p)
 }
 
 Node* insert (int x, int pos) {
-    Node *p = head;
-    Node* newnode;
-
-    if (pos < 0 || pos > Count(p))
-        return head;
-
-    newnode = (Node*)malloc(sizeof(Node));
+    if (pos < 0 || pos > Count(first))
+        return first;
+    Node *p = first;
+    Node* newnode = (Node*)malloc(sizeof(Node));
     newnode->data = x;
+
     if (pos == 0) {
         newnode->prev = NULL;
-        newnode->next = head;
-        if (head)
-            head->prev = newnode;
-        head = newnode;
+        newnode->next = first;
+        if (first)
+            first->prev = newnode;
+        first = newnode;
     } else {
-        for (int i = 1; i < pos; i++)
+        for (int i = 0; i < pos - 1 && p; i++) // reach a node before inserting position
             p = p->next;
         newnode->next = p->next;
         newnode->prev = p;
-        if (p->next)
+        if (p->next) // crucial
             p->next->prev = newnode;
         p->next = newnode;
     }
-    return head;
+    return first;
 }
 
-int Delete (Node *p, int pos) {
+int delete (Node *p, int pos) {
     int x = -1;
 
-    if (pos < 0 || pos > Count(p))
+    if (first == NULL || pos < 1 || pos > Count(p))
         return x;
-    if (pos == 1) {
-        p = p->next;
-        x = head->data;
-        free(head);
-        head = p;
-        if (p)
-            p->prev = NULL;
+    if (pos == 0) {
+        first = first->next;
+        x = first->data;
+        if (first)
+            first->prev = NULL;
+        free(p);
     } else {
-        for (int i = 1; i < pos; i++)
-            p = p->next;
+        for (int i = 0; i < pos; i++) // crucial, xero indexing
+            p = p->next; // p now points to the node to be deleted
         p->prev->next = p->next;
         if (p->next)
             p->next->prev = p->prev;
@@ -130,9 +129,8 @@ void Search (Node *p, int x) {
 }
 
 void Reverse () {
-    Node *curr = head, *temp = NULL;
-
-    if (!head) return;
+    if (!first) return;
+    Node *curr = first, *temp = NULL;
 
     while (curr) {
         temp = curr->prev;
@@ -142,27 +140,27 @@ void Reverse () {
         curr = curr->prev;
     }
     if (temp)
-        head = temp->prev;
+        first = temp->prev;
 }
 
 int main () {
     int A[] = {1, 3, 5, 7, 9};
 
     create(A, sizeof(A)/ sizeof(A[0]));
-    Display(head);
-    printf("The length of list is %d\n", Count(head));
-    head = insert(20, 6); // insert end
-    Display(head);
-    Traverse(head);
-    printf("The length of list is %d\n", Count(head));
-    Search(head, 24);
+    Display(first);
+    printf("The length of list is %d\n", Count(first));
+    first = insert(24, 3);
+    Display(first);
+    Traverse(first);
+    printf("The length of list is %d\n", Count(first));
+    Search(first, 24);
 
-    printf("Deleted the node with value %d\n", Delete(head, 4));
-    Display(head);
+    printf("Deleted the node with value %d\n", delete(first, 4));
+    Display(first);
 
-    Reverse(head);
-    Display(head);
-    Reverse(head);
-    Display(head);
+    Reverse(first);
+    Display(first);
+    Reverse(first);
+    Display(first);
     return 0;
 }
