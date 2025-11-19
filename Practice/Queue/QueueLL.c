@@ -1,14 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct Node{
+typedef struct Node {
     int data;
-    struct Node*next;
-}*front=NULL,*rear=NULL;
+    struct Node *next;
+} Node;
 
-void enqueue(int x){
-    struct Node *q;
-    q = (struct Node*)malloc(sizeof(struct Node));
+Node *front = NULL, *rear = NULL;
+
+void enqueue(int x) {
+    Node *q;
+    q = (Node*)malloc(sizeof(Node));
     if(q==NULL){
         printf("Queue is Full");
     }else{
@@ -26,12 +28,13 @@ void enqueue(int x){
 
 }
 
-int dequeue(){
-    int x =-1;
-    if(front==NULL){
+int dequeue() {
+    int x = -1;
+
+    if(front == NULL){
         printf("Queue is empty");
     }else{
-        struct Node *p;
+        Node *p;
         p = front;
         front=front->next;
         x = p->data;
@@ -40,8 +43,8 @@ int dequeue(){
     return x;
 }
 
-void display(){
-    struct Node *p;
+void display() {
+    Node *p;
     p = front;
     while(p!=NULL){
         printf("%d ",p->data);
@@ -50,7 +53,7 @@ void display(){
     printf("\n");
 }
 
-int main(){
+int main() {
     enqueue(3);
     enqueue(4);
     enqueue(6);

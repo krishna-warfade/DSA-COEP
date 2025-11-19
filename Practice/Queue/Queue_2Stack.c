@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include "math.h"
 
-struct stack
-{
+typedef struct {
     int size;
     int top;
     int *S;
-} st1, st2;
+} Stack;
 
-void create(struct stack *st)
+Stack st1, st2;
+
+// Stack functions
+void create(Stack *st)
 {
     printf("Enter size of queue:");
     scanf("%d", &st->size);
@@ -17,7 +19,7 @@ void create(struct stack *st)
     st->S = (int *)malloc(st->size * sizeof(int));
 }
 
-void push(struct stack *st, int x)
+void push(Stack *st, int x)
 {
     if (st->top == st->size - 1)
     {
@@ -30,7 +32,7 @@ void push(struct stack *st, int x)
     }
 }
 
-int pop(struct stack *st)
+int pop(Stack *st)
 {
     int x = -1;
     if (st->top == -1)
@@ -44,35 +46,32 @@ int pop(struct stack *st)
     return x;
 }
 
-int isEmpty(struct stack st)
+int isEmpty(Stack st)
 {
     return st.top == -1;
 }
+
+// Queue implementation starts
 
 void enqueue(int x)
 {
     push(&st1, x);
 }
 
-int dequeue()
-{
+int dequeue () {
     int x = -1;
-    if (isEmpty(st2))
-    {
-        if (isEmpty(st1))
-        {
-            printf("Queue empty");
+
+    if (isEmpty(st2)) {
+        if (isEmpty(st1)) {
+            printf("Queue is empty\n");
             return x;
-        }
-        else
-        {
+        } else {
             while (!isEmpty(st1))
-            {
                 push(&st2, pop(&st1));
-            }
         }
     }
-    return pop(&st2);
+    x = pop(&st2);
+    return x;
 }
 
 int main()
@@ -83,6 +82,8 @@ int main()
     enqueue(25);
     enqueue(22);
     enqueue(29);
+    printf("%d\n", dequeue());
+    printf("%d\n", dequeue());
     printf("%d\n", dequeue());
     printf("%d\n", dequeue());
     printf("%d\n", dequeue());
