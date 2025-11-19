@@ -16,7 +16,7 @@ void create (Stack *st) {
 }
 
 void push (Stack *st, int x) {
-    if (st->top == st->size) {
+    if (st->top == st->size - 1) {
         printf("Stack is full\n");
     } else {
         st->top++;
