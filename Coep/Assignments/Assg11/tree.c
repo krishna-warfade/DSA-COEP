@@ -37,7 +37,7 @@ Node* insert (Node* root, int val) {
 }
 
 Node* search (Node* root, int val) {
-    if (!root || root->data == val)
+    if (root == NULL || root->data == val)
         return root;
     if (val < root->data)
         return search(root->lchild, val);
@@ -73,14 +73,6 @@ Node* delete (Node* root, int val) {
         root->rchild = delete(root->rchild, temp->data);
     }
     return root;
-}
-
-Node* search (Node* root, int val) {
-    if (root == NULL || root->data == val)
-        return root;
-    if (val < root->data)
-        return search(root->lchild, val);
-    return search(root->rchild, val);
 }
 
 int depth (Node* root) {
