@@ -37,6 +37,10 @@ int pop () { // delete
     return x;
 }
 
+int isEmptyStack () {
+    return top == NULL;
+}
+
 int peek (int pos) {
     int x = -1;
 
@@ -52,14 +56,10 @@ int peek (int pos) {
     return x;
 }
 
-int isEmpty () {
-    return top == NULL;
-}
-
 int topEle () {
     int x = -1;
 
-    if (!isEmpty()) {
+    if (!isEmptyStack()) {
         x = top->data;
     }
     return x;
@@ -123,12 +123,12 @@ char* infTopostf(char *str, char *ans) {
         } else if (str[i] == '(') {
             push(str[i]);
         } else if (str[i] == ')') {
-            while (!isEmpty() && topEle() != '(')
+            while (!isEmptyStack() && topEle() != '(')
                 ans[j++] = pop();
             // got the opening bracket '(', pop it
             x = pop();
         } else { // operator
-            while(!isEmpty() && prio(topEle()) >= prio(str[i])) { // if operator (to be checked, has lesser priority, it can't be popped onto the answer string, stack top has to be popped to answer)
+            while(!isEmptyStack() && prio(topEle()) >= prio(str[i])) { // if operator (to be checked, has lesser priority, it can't be popped onto the answer string, stack top has to be popped to answer)
                 ans[j++] = pop();
             }
             push(str[i]); // push the current operator
@@ -136,7 +136,7 @@ char* infTopostf(char *str, char *ans) {
         i++;
     }
     // empty the remng stack
-    while (!isEmpty())
+    while (!isEmptyStack())
         ans[j++] = pop();
 
     ans[j] = '\0';
@@ -171,16 +171,16 @@ char* infTopref(char *str, char *prefans) {
             else if (str[i] == '(') {
                 push(str[i]);
             } else if (str[i] == ')') {
-                while (!isEmpty() && topEle() != '(')
+                while (!isEmptyStack() && topEle() != '(')
                     prefans[j++] = pop();
                 pop();
         } else {
             if (temp[i] == '^') {
-                while(!isEmpty() && prio(temp[i]) < prio(topEle())) {
+                while(!isEmptyStack() && prio(temp[i]) < prio(topEle())) {
                     prefans[j++] = pop();
                 }
             } else {
-                while (!isEmpty() && prio(temp[i]) < prio(topEle())) {
+                while (!isEmptyStack() && prio(temp[i]) < prio(topEle())) {
                     prefans[j++] = pop();
                 }
             }
@@ -188,7 +188,7 @@ char* infTopref(char *str, char *prefans) {
         }
         i++;
     }
-    while (!isEmpty())
+    while (!isEmptyStack())
     {
         prefans[j++] = pop();
     }

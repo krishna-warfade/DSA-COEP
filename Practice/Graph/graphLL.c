@@ -305,6 +305,17 @@ void iterative_dfs (Graph graph, int start_vert) { // Uses Stack
     free(visited);
 }
 
+// void hasCycle (Graph graph) {
+//     top = NULL;
+//     int *visited = (int *)calloc(graph.vertices, sizeof(int));
+//     int *parent = (int *)calloc(graph.vertices, sizeof(int));
+
+//     for (int i = 0; i < graph.vertices; i++)
+//         parent[i] = -1;
+    
+    
+// }
+
 void freeGraph (Graph *graph) {
     for (int i = 0; i < graph->vertices; i++) {
         Node *temp = graph->adj_list[i];
