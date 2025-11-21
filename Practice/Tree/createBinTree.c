@@ -20,7 +20,7 @@ void Treecreate() {
 
     while(!isEmpty(q)) {
         p = dequeue(&q);
-        printf("Enter left child of %d ", p->data);
+        printf("Enter left child of %d: ", p->data);
         scanf("%d", &x);
         if (x != -1) {
             t = (Node*)malloc((sizeof(Node)));
@@ -29,7 +29,7 @@ void Treecreate() {
             p->lchild = t;
             enqueue(&q, t);
         }
-        printf("Enter right child of %d ", p->data);
+        printf("Enter right child of %d: ", p->data);
         scanf("%d", &x);
         if (x != -1) {
             t = (Node*)malloc((sizeof(Node)));
@@ -68,10 +68,13 @@ void postorder (Node *p) {
 int main () {
     Treecreate();
 
+    printf("Preorder: ");
     preorder(root);
     printf("\n");
+    printf("Inorder: ");
     inorder(root);
     printf("\n");
+    printf("Postorder: ");
     postorder(root);
     printf("\n");
 

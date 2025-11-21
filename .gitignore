@@ -36,3 +36,5 @@
 # Misc
 *.log
 *.tmp
+
+.vscode
