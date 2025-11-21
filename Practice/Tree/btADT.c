@@ -125,6 +125,52 @@ int isEmptyStack2 () {
 
 // Stack operations end
 
+// Queue operations start
+
+typedef struct QNode {
+    struct Node *treeNode;
+    struct QNode *next;
+} QNode;
+
+QNode *front, *rear;
+
+void enqueue(Node *t) {
+    QNode *q = (QNode*)malloc(sizeof(QNode));
+    if(q==NULL) {
+        printf("Queue is Full");
+    } else {
+        q->treeNode=t;
+        q->next=NULL;
+        if(front==NULL){
+            front = rear = q;
+        }
+        else {
+            rear->next=q;
+            rear = q;
+        }
+    }
+}
+
+Node *dequeue() {
+    Node *t;
+
+    if(front == NULL){
+        printf("Queue is empty");
+    }else{
+        QNode *p = front;
+        front = front->next;
+        t = p->treeNode;
+        free(p);
+    }
+    return t;
+}
+
+int isEmptyQ () {
+    return front == NULL;
+}
+
+// Queue operations end
+
 int height (Node* root);
 
 Node *insert (int x, Node *t) {
@@ -223,7 +269,7 @@ void iterative_inorder (Node *p) { // uses stack
     printf("\n");
 }
 
-void iterative_postorder (Node *p) { // uses stack
+void iterative_postorder (Node *p) { // uses 2 stacks
     // L->R->D
     if (!p) return;
 
@@ -248,6 +294,25 @@ void iterative_postorder (Node *p) { // uses stack
     while (!isEmptyStack2()) {
         Node *temp = pop2();
         printf("%d ", temp->data);
+    }
+    printf("\n");
+}
+
+void level_order (Node *p) {
+    if (!p) return;
+
+    front = NULL;
+    rear = NULL;
+
+    enqueue(p);
+
+    while (!isEmptyQ()) {
+        Node *temp = dequeue();
+
+        printf("%d ", temp->data);
+
+        if (temp->lchild) enqueue(temp->lchild);
+        if (temp->rchild) enqueue(temp->rchild);
     }
     printf("\n");
 }
@@ -281,6 +346,9 @@ int main() {
 
     printf("Iterative Post-order: ");
     iterative_postorder(root);
+
+    printf("Level order traversal: ");
+    level_order(root);
 
     return 0;
 }
