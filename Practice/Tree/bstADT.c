@@ -171,7 +171,31 @@ int isEmptyQ () {
 
 // Queue operations end
 
-int height (Node* root);
+int height (Node* root) {
+    if (!root)
+        return 0;
+    int a = 0;
+    int b = 0;
+
+    a = height(root->lchild);
+    b = height(root->rchild);
+
+    return (a > b) ? (1 + a) : (1 + b);
+}
+
+Node *InPre (Node *p) { // inorder predecessor
+    // Right most child of left subtree
+    while (p && p->rchild)
+        p = p->rchild;
+    return p;
+}
+
+Node *InSucc (Node *p) { // inorder successor
+    // Left most child of right subtree
+    while (p && p->lchild)
+        p = p->lchild;
+    return p;
+}
 
 Node *insert (int x, Node *t) {
     Node *p, *q;
@@ -185,15 +209,15 @@ Node *insert (int x, Node *t) {
         // t = q;
         return q;
     }
-    while (t) {
-        p = t;
+    while (t) { // reach till required node to insert
         if (t->data == x)
             return root;
-        else if (x < t->data)
+        p = t; // even if t becomes null, p is not since it's prev value gets stored in p
+        if (x < t->data)
             t = t->lchild;
         else
             t = t->rchild;
-    } // reach till required node to insert
+    }
 
     q = (Node *)malloc(sizeof(Node));
     q->data = x;
@@ -204,6 +228,51 @@ Node *insert (int x, Node *t) {
     else
         p->rchild = q;
     return root;
+}
+
+Node *Rinsert (int x, Node *p) {
+    if (p == NULL) {
+        p = (Node*)malloc(sizeof(Node));
+        p->data = x;
+        p->lchild = p->rchild = NULL;
+        return p;
+    }
+    if (x < p->data) {
+        p->lchild = Rinsert(x, p->lchild);
+    } else if (x > p->data) {
+        p->rchild = Rinsert(x, p->rchild);
+    }
+    return p;
+}
+
+Node *delete (int x, Node *p) {
+    if (!p) return NULL;
+
+    Node *q;
+
+    if (x < p->data)
+        p->lchild = delete(x, p->lchild);
+    else if (x > p->data)
+        p->rchild = delete(x, p->rchild);
+    else { // reached the node
+        if (!p->lchild && !p->rchild) { // leaf node
+            if (p == root)
+                root = NULL;
+            free(p);
+            return NULL;
+        }
+        if (height(p->lchild) > height(p->rchild)) {
+            q = InPre(p->lchild); // right most child of left subtree
+            p->data = q->data;
+            p->lchild = delete(q->data, p->lchild); // we have to physically delete only the predecessor node.
+
+        } else {
+            q = InSucc(p->rchild);
+            p->data = q->data;
+            p->rchild = delete(q->data, p->rchild);
+        }
+    }
+    return p;
 }
 
 // Recursive traversals...
@@ -298,7 +367,7 @@ void iterative_postorder (Node *p) { // uses 2 stacks
     printf("\n");
 }
 
-void level_order (Node *p) {
+void level_order (Node *p) { // uses queue
     if (!p) return;
 
     front = NULL;
@@ -317,6 +386,22 @@ void level_order (Node *p) {
     printf("\n");
 }
 
+Node *largest (Node *p) {
+    if (!p || !p->rchild) {
+        printf("Largest data in the node is: %d\n", p->data);
+        return p;
+    }
+    
+    return largest(p->rchild);
+}
+
+int TotalNodes (Node *p) {
+    if (!p)
+        return 0;
+    else
+        return (TotalNodes(p->lchild) + TotalNodes(p->rchild) + 1);
+}
+
 int main() {
     root = insert(24, root);
     insert(55, root);
@@ -324,7 +409,10 @@ int main() {
     insert(18, root);
     insert(1, root);
     insert(8, root);
-    insert(318, root);
+    Rinsert(318, root);
+    
+    root = delete(318, root);
+    printf("Deleted node with data 318\n");
 
     printf("Pre-order: ");
     preorder(root);
@@ -350,5 +438,7 @@ int main() {
     printf("Level order traversal: ");
     level_order(root);
 
+    largest(root);
+    printf("Total nodes in the BST: %d\n", TotalNodes(root));
     return 0;
 }
