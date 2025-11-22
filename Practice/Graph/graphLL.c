@@ -253,6 +253,15 @@ void bfs (Graph graph, int start_vert) { // Uses Queue
     free(visited);
 }
 
+// void dfs (int i, vector<vector<int>>& isConnected, vector<int>& visited) {
+//         visited[node] = 1; // visited node
+
+//         for (int neighbor = 0; neighbor < isConnected.size(); neighbor++) {
+//             if (isConnected[node][neighbor] == 1 && !visited[neighbor])
+//                 dfs(neighbor, isConnected, visited);
+//         }
+// }
+
 void dfs_helper (Graph graph, int *visited, int current_vert) {
     visited[current_vert] = 1;
     printf("%d ", current_vert);
