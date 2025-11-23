@@ -14,7 +14,7 @@ void swap (int *a, int *b) {
     *b = temp;
 }
 
-int partition (int arr[], int low, int high) {
+int partition (int arr[], int low, int high) { // high  is pivot
     int pivot = arr[low];
     int i = low, j = high;
 
@@ -33,7 +33,7 @@ int partition (int arr[], int low, int high) {
 }
 
 void qsort(int arr[], int low, int high) {
-    int partition_idx;
+    int partition_idx; // pivot
 
     if (low < high) {
         partition_idx = partition(arr, low, high); // find pivot->place at correct place->return where it is placed
@@ -41,6 +41,28 @@ void qsort(int arr[], int low, int high) {
         qsort(arr, partition_idx + 1, high); // sort right
     }
 }
+
+/*
+void partition(int arr[], int n, int *pivot){
+    int i = 0, j = n - 1;
+    int p = arr[0];
+    while(i < j){
+        while(arr[i] <= p) i++;
+        while(arr[j] > p) j--;
+        if(i < j) swap(&arr[i], &arr[j]);
+    }
+    swap(&arr[0], &arr[j]);
+    *pivot = j;
+}
+
+void quick_sort(int arr[], int n){
+    if(n <= 1) return;
+    int pivot;
+    partition(arr, n, &pivot);
+    quick_sort(arr, pivot);
+    quick_sort(arr + pivot + 1, n - pivot - 1);
+}
+*/
 
 int main() {
     int arr[] = {6, 1, 8, 4, 5, 2, 3, 7};
