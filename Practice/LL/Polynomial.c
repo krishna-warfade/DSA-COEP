@@ -1,5 +1,5 @@
 /*
-Q1. Implement a menu-driven polynomial manipulation using a singly linked list for 
+Implement a menu-driven polynomial manipulation using a singly linked list for 
 following operations: 
 i.  Addition of polynomials 
 ii. Subtraction of polynomials
@@ -33,9 +33,10 @@ void insert(Node** head, int coeff, int pwr) {
         *head = newnode;
     else {
         Node* temp = *head;
+
         while(temp->next)
             temp = temp->next;
-        temp->next = newnode;
+        temp->next = newnode; // append
     }
 }
 
@@ -65,7 +66,7 @@ Node* add(Node* p, Node* q) {
         } else if (p->pwr < q->pwr) {
             insert(&res, q->coeff, q->pwr);
             q = q->next;
-        } else {// both have same powers
+        } else { // both have same powers, coeff gets added & power remains same
             insert(&res, p->coeff + q->coeff, p->pwr);
             p = p->next;
             q = q->next;
@@ -89,10 +90,10 @@ Node* sub(Node* p, Node* q) {
         if (p->pwr > q->pwr) {
             insert(&res, p->coeff, p->pwr);
             p = p->next;
-        } else if (p->pwr < q->pwr) {
+        } else if (p->pwr < q->pwr) { // since we are doing p - q
             insert(&res, -q->coeff, q->pwr);
             q = q->next;
-        } else {// both have same powers
+        } else { // both have same powers, coeff gets subtracted & power remains same
             insert(&res, p->coeff - q->coeff, p->pwr);
             p = p->next;
             q = q->next;
@@ -103,7 +104,7 @@ Node* sub(Node* p, Node* q) {
         p = p->next;
     }
     while (q) {
-        insert(&res, -q->coeff, q->pwr);
+        insert(&res, -q->coeff, q->pwr); // since we are doing p - q
         q = q->next;
     }
     return res;
@@ -115,16 +116,15 @@ void display(Node* p) {
         return;
     }
     Node* temp = p;
+
     while(temp) {
-        if (temp->pwr == 0 && temp->coeff != 0) {
+        if (temp->pwr == 0 && temp->coeff != 0) { // just a coefficient without any x-term
             printf("(%d)", temp->coeff);
-        } else if (temp->coeff != 0)
+        } else if (temp->coeff != 0) // temp->pwr != 0
             printf("(%dx^%d)", temp->coeff, temp->pwr);
 
         if (temp->next && temp->next->coeff)
             printf(" + ");
-        // else if (temp->next)
-        //     printf(" ");
         temp = temp->next;
     }
     printf("\n");
