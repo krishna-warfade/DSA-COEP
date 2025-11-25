@@ -20,6 +20,8 @@ typedef struct Graph {
     Node **adj_list; // 2D array, list pointing to another list
 } Graph;
 
+//
+
 typedef struct QNode {
     int data;
     struct QNode *next;

@@ -105,7 +105,7 @@ int delete (int pos) {
     Node* temp = first;
 
     // delete first node
-    if (pos == 1) {
+    if (pos == 0) {
         while (temp->next != first)
             temp = temp->next; // to delete first i.e to delete the last, go till end
         if (temp == first) { // only one node
@@ -121,19 +121,22 @@ int delete (int pos) {
             free(del);
         }
     } else {
-        Node *slow = NULL;
-        // move to (pos - 1)th node
-        for (int i = 0; i < pos - 2; i++) {
+        Node *del = NULL;
+        // move temp to (pos - 1)th node
+        for (int i = 0; i < pos - 1; i++) {
             temp = temp->next;
-            if (temp->next == first) // out of bound
+            if (temp == first) // out of bound
                 return -1;
         }
-        slow = temp->next; // node to be deleted
+        del = temp->next; // node to be deleted
 
-        temp->next = slow->next;
+        if (del == first)
+            return -1;
 
-        x = slow->data;
-        free(slow);
+        x = del->data;
+        temp->next = del->next;
+        
+        free(del);
     }
     return x;
 }

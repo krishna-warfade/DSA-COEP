@@ -38,11 +38,11 @@ int delete(int A[], int n) {
     i = 1, j = i * 2;
 
     while (j < n - 1) {
-        if (A[j + 1] > A[j]) // rchild > lchild
+        if (A[j + 1] > A[j]) // rchild > lchild, continue
             j++;
         if (A[i] < A[j]) { // parent < child, interchange
             swap(&A[i], &A[j]);
-            i = j;
+            i = j; // now parent is children.
             j *= 2; // going towards it's children
         } else
             break;

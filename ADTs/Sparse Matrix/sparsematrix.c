@@ -1,11 +1,10 @@
 /* Steps:
-
  * CREATE A SPARSE MATRIX
  * FILL THE SPARSE MATRIX
  * PRINT IT
  * CREATE ANOTHER SPARSE MATRIX
  * PRINT IT
- * ADD 2 SPARSE MATRICES
+ * sum 2 SPARSE MATRICES
  * PRINT RESULTANT MATRIX
  * TRANSPOSE THE RESULTANT MATRIX
  * PRINT IT
@@ -16,16 +15,16 @@
 
 typedef struct Element
 {
-    int i;
-    int j;
-    int x;
+    int i; // row number
+    int j; // column number
+    int x; // value
 } Element;
 
 typedef struct Sparse
 {
-    int m;
-    int n;
-    int num;
+    int m; // no. of rows
+    int n; // no. of columns
+    int num; // no. of non-zero elements
     Element *e;
 } Sparse;
 
@@ -68,54 +67,56 @@ void Display(Sparse s)
 
 Sparse *add(Sparse *s1, Sparse *s2)
 {
-    Sparse *add = (Sparse *)malloc(sizeof(Sparse));
-    add->m = s1->m;
-    add->n = s1->n;
-    add->e = (Element *)malloc((s1->num + s2->num) * sizeof(Element));
+    Sparse *sum = (Sparse *)malloc(sizeof(Sparse));
+    sum->m = s1->m;
+    sum->n = s1->n;
+    sum->e = (Element *)malloc((s1->num + s2->num) * sizeof(Element));
 
     if (s1->m != s2->m || s1->n != s2->n)
     {
         return NULL;
     }
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0, k = 0; // indices for the sparse matrices: s1, s2 and sum respectively.
+
     while (i < s1->num && j < s2->num)
     {
         if (s1->e[i].i < s2->e[j].i)
         {
-            add->e[k++] = s1->e[i++];
+            sum->e[k++] = s1->e[i++];
         }
         else if (s1->e[i].i > s2->e[j].i)
         {
-            add->e[k++] = s2->e[j++];
+            sum->e[k++] = s2->e[j++];
         }
-        else
+        else // same row
         {
             if (s1->e[i].j < s2->e[j].j)
             {
-                add->e[k++] = s1->e[i++];
+                sum->e[k++] = s1->e[i++];
             }
             else if (s1->e[i].j > s2->e[j].j)
             {
-                add->e[k++] = s2->e[j++];
+                sum->e[k++] = s2->e[j++];
             }
-            else
+            else // same row + same column
             {
-                add->e[k] = s1->e[i];
-                add->e[k++].x = s1->e[i++].x + s2->e[j++].x;
+                sum->e[k] = s1->e[i]; // row no. & column no. copied
+                sum->e[k++].x = s1->e[i++].x + s2->e[j++].x;
             }
         }
     }
-    for (; i < s1->num; i++)
-        add->e[k++] = s1->e[i++];
+    for (; i < s1->num; i++) // row, column & value copied
+        sum->e[k++] = s1->e[i++];
     for (; j < s2->num; j++)
-        add->e[k++] = s2->e[j++];
-    add->num = k;
-    return add;
+        sum->e[k++] = s2->e[j++];
+    // no. of non-zero elements in the sum matrix
+    sum->num = k;
+    return sum;
 }
 
 void fast_transpose(Sparse *t, Sparse *s)
 {
-    t->m = s->n; // transpose: rows become cols
+    t->m = s->n; // transpose: rows become columns and vice versa
     t->n = s->m;
     t->num = s->num;
 
@@ -146,6 +147,7 @@ void fast_transpose(Sparse *t, Sparse *s)
         {
             int col = s->e[i].j;
             int pos = start_pos[col]++;
+
             t->e[pos].i = s->e[i].j;
             t->e[pos].j = s->e[i].i;
             t->e[pos].x = s->e[i].x;
