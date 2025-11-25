@@ -264,8 +264,7 @@ Node *delete (int x, Node *p) {
         if (height(p->lchild) > height(p->rchild)) {
             q = InPre(p->lchild); // right most child of left subtree
             p->data = q->data;
-            p->lchild = delete(q->data, p->lchild); // we have to physically delete only the predecessor node.
-
+            p->lchild = delete(q->data, p->lchild); // we have to physically delete only the predecessor node, so find that node in the left subtree
         } else {
             q = InSucc(p->rchild);
             p->data = q->data;

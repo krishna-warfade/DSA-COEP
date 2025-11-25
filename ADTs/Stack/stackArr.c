@@ -62,7 +62,7 @@ int stackTop (Stack st) {
     return (!isEmpty(st)) ? st.s[st.top] : -1;
 }
 
-void display (Stack st) {
+void display (Stack st) { // top to bottom
     for (int i = st.top; i >= 0; i--)
         printf("%d ", st.s[i]);
     printf("\n");

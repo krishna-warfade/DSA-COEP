@@ -1,3 +1,5 @@
+.vscode/
+
 # Compiled source files
 *.o
 *.obj
@@ -36,5 +38,3 @@
 # Misc
 *.log
 *.tmp
-
-.vscode

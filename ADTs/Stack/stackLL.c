@@ -10,11 +10,11 @@ typedef struct Node {
 
 Node *top = NULL;
 
-void push (int x) { // insert
+void push (int x) { // insert at FIRST position always
     Node *newnode = (Node*)malloc(sizeof(Node));
 
     if (newnode == NULL) {
-        return;
+        return; // malloc failed
     }
     else { 
         newnode->data = x;
@@ -48,7 +48,7 @@ int peek (int pos) {
         printf("Stack is empty\n");
     else {
         Node *temp = top;
-        for (int i = 0; i < pos - 1 && temp; i++)
+        for (int i = 0; i < pos - 1 && temp; i++) // reach till posn
             temp = temp->next;
         if (temp)
             x = temp->data;
@@ -84,13 +84,14 @@ void isBalance (char *exp) { // exp[]
         } else if (exp[i] == ')') {
             if (top == NULL)
                 ans = 0;
-            pop();
+            else
+                pop();
         }
     }
     if (top == NULL)
         ans = 1;
-    else
-        ans = 0;
+    // else
+    //     ans = 0;
     if (ans) printf("Expression is Matching\n");
     else printf("No match\n");
 }
