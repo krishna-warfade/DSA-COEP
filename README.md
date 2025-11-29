@@ -1,6 +1,6 @@
 # DSA - COEP (Data Structures and Algorithms)
 
-Welcome to the **DSA - COEP** repository! This project contains a comprehensive collection of Data Structures and Algorithms implemented in C, tailored for the coursework and lab assignments at the **College of Engineering Pune (COEP)**.
+This repository contains a comprehensive collection of Data Structures and Algorithms implemented in C, adapted for the coursework and lab assignments at the **College of Engineering Pune (COEP)**.
 
 ## 📂 Repository Structure
 
@@ -31,14 +31,6 @@ Specific resources related to the college curriculum.
 - **Class**: Classwork and examples.
 - **Resources**: Additional learning materials.
 
-## 🚀 Getting Started
-
-To run any of the programs in this repository, you will need a C compiler (like `gcc`).
-
-### Prerequisites
-- GCC Compiler (MinGW for Windows, or native GCC for Linux/macOS)
-- A code editor (VS Code, CLion, etc.)
-
 ### Compilation and Execution
 
 1.  **Navigate to the directory** containing the source file:
@@ -61,13 +53,7 @@ To run any of the programs in this repository, you will need a C compiler (like 
       ./output_name
       ```
 
-## 🛠️ Technology Stack
-- **Language**: C
-- **Tools**: GCC, VS Code
-
-## 👤 Author
-**Krishna Warfade**
-*College of Engineering Pune*
+## Author
+**Krishna Warfade**: [**LinkedIn**](https://www.linkedin.com/in/krishna-warfade/) | [**GitHub**](https://github.com/krishna-warfade)
 
 ---
-*This repository is for educational purposes and serves as a reference for DSA concepts.*
