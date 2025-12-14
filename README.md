@@ -9,9 +9,9 @@ The repository is organized into the following main directories:
 ### 1. `ADTs` (Abstract Data Types)
 Contains implementations of fundamental data structures.
 - **Linked List**: Singly, Doubly, and Circular Linked Lists.
-- **Stack**: Array and Linked List based implementations.
-- **Queue**: Simple, Circular, and Priority Queues.
-- **Tree**: Binary Trees, BST, AVL Trees, etc.
+- **Stack**: Array, Linked List and Queue based implementations.
+- **Queue**: Array, Linked List and Stack based implementation of Simple and Circular Queues.
+- **Tree**: Binary Trees, BST, etc.
 - **Graph**: Graph representations and traversals (BFS, DFS).
 - **Heap**: Min and Max Heaps.
 - **Sparse Matrix**: Representations and operations.
@@ -24,7 +24,7 @@ Includes standard algorithms for solving common problems.
 - **Hashing**: Hash tables and collision resolution techniques.
 
 ### 3. `Coep`
-Specific resources related to the college curriculum.
+Resources related to the college curriculum.
 - **Assignments**: Solutions to practical assignments.
 - **LabWork**: Code written during lab sessions.
 - **PYQs**: Previous Year Questions and solutions.
@@ -44,16 +44,10 @@ Specific resources related to the college curriculum.
     ```
 
 3.  **Run the executable**:
-    - On Windows:
-      ```bash
-      .\output_name.exe
-      ```
-    - On Linux/macOS:
       ```bash
       ./output_name
       ```
 
 ## Author
 **Krishna Warfade**: [**LinkedIn**](https://www.linkedin.com/in/krishna-warfade/) | [**GitHub**](https://github.com/krishna-warfade)
-
 ---
